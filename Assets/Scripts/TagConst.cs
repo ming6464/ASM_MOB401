@@ -9,7 +9,6 @@ public static class TagConst{
     public const string A_JUMP = "Jump",
         A_Run = "Run",
         A_Fall = "Fall",
-        A_Attack = "Attack",
         A_Landing = "Landing",
         A_IDLE = "Idle",
         A_WALK = "Walk";

@@ -6,8 +6,6 @@ public class Teleport : MonoBehaviour
 {
     [SerializeField]
     private Transform _nextPos;
-
-    // Update is called once per frame
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.gameObject.CompareTag(TagConst.PLAYER)){

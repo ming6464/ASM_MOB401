@@ -1,27 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BackgroundScroll : Singleton<BackgroundScroll>
+public class BackgroundScroll : MonoBehaviour
 {
     [SerializeField] private float _speed;
+    [SerializeField] private Transform _player;
     private SpriteRenderer m_sp;
-    public override void Awake()
+    private float m_passX, m_dx;
+    void Start()
     {
-        
-    }
-
-    public override void Start()
-    {
+        m_passX = transform.position.x;
         m_sp = GetComponent<SpriteRenderer>();
     }
 
-    public void Scrolling(float dx)
+    private void LateUpdate()
     {
-        if (m_sp)
-        {
-            float speed = _speed * Time.deltaTime;
-            m_sp.material.mainTextureOffset += new Vector2(dx * speed, 0);
-        }
+        if (!_player) return;
+        m_dx = 0;
+        m_passX -= _player.position.x;
+        if (m_passX < 0) m_dx = 1;
+        else if (m_passX > 0) m_dx = -1;
+        m_passX = _player.position.x;
+        m_sp.material.mainTextureOffset += new Vector2(m_dx * _speed * Time.deltaTime, 0);
     }
 }

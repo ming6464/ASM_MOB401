@@ -20,8 +20,7 @@ public class PlayerController : MonoBehaviour
         m_velJump = new Vector2(0, Mathf.Sqrt(50));
         m_anim = GetComponent<Animator>();
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         m_directX = Input.GetAxisRaw("Horizontal");
@@ -62,17 +61,14 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Space) && !m_isAttack && (m_isLand || (m_isJump && !m_isJumpStart)))
+            if (Input.GetKeyDown(KeyCode.Space) && !m_isAttack && !m_isJumpStart)
             {
-                m_curAnim = TagConst.A_Attack;
                 m_isAttack = true;
                 m_rg.velocity = Vector2.zero;
-                m_isJump = false;
+                m_anim.SetTrigger("isAttack");
             }
             PlayAnim(m_curAnim);
         }
-        
-        CamController.Ins.ChangePos(transform.position);
     }
 
     public void PlayAnim(string anim)
@@ -92,7 +88,7 @@ public class PlayerController : MonoBehaviour
 
     private void EndAttack()
     {
-
+        m_anim.ResetTrigger("isAttack");
         m_isAttack = false;
     }
 
@@ -101,15 +97,12 @@ public class PlayerController : MonoBehaviour
         GameObject gObj = col.gameObject;
         if (gObj.CompareTag(TagConst.GROUND))
         {
+            if (m_curAnim != TagConst.A_Fall) return;
+            m_isJump = false;
+            m_isJumpEnd = true;
+            m_curAnim = TagConst.A_Landing;
+            PlayAnim(m_curAnim);
             m_isLand = true;
-            if (m_isJump)
-            {
-                m_isJump = false;
-                m_isJumpEnd = true;
-                m_curAnim = TagConst.A_Landing;
-                PlayAnim(m_curAnim);
-            }
-            else m_isJumpEnd = false;
         }
         
     }
@@ -117,10 +110,7 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionExit2D(Collision2D other)
     {
         GameObject gObj = other.gameObject;
-        if (gObj.CompareTag(TagConst.GROUND))
-        {
-            m_isLand = false;
-        }
+        if (gObj.CompareTag(TagConst.GROUND)) m_isLand = false;
     }
     
     public void PlayAnimHit()
