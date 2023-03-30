@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Teleport_a
+  - Teleport_b
+  - Ground
+  - Sword
+  - Enemy
+  - DeathZone
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Enemy
+  - Water
+  - UI
+  - Player
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Background
+    uniqueID: 1249027111
+    locked: 0
+  - name: Tilemap-NoCollision4
+    uniqueID: 247479245
+    locked: 0
+  - name: Tilemap-NoCollision3
+    uniqueID: 1461807953
+    locked: 0
+  - name: Tilemap-NoCollision2
+    uniqueID: 882622759
+    locked: 0
+  - name: Tilemap-NoCollision1
+    uniqueID: 862803773
+    locked: 0
+  - name: Tilemap-NoCollision0
+    uniqueID: 3550079533
+    locked: 0
+  - name: Tilemap-Collision
+    uniqueID: 472961777
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
