@@ -6,23 +6,27 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
-    private float _moveSpeed;
+    private HealthBar _healthBar;
+    [SerializeField]
+    private float _moveSpeed,_maxHealth = 100;
     private float m_directX, m_directY, m_passDirectX;
     private Rigidbody2D m_rg;
     private Vector2 m_velJump;
-    private bool m_isJump, m_isLand,m_isJumpStart,m_isJumpEnd,m_isAttack,m_isHit;
+    private bool m_isJump, m_isLand, m_isJumpStart, m_isJumpEnd, m_isAttack, m_isHit, m_isDeath;
     private Animator m_anim;
-    private string m_passAnim, m_curAnim;
+    private string m_passAnim, m_curAnim,m_paramAttack;
     void Start()
     {
-        m_isLand = true;
         m_rg = GetComponent<Rigidbody2D>();
         m_velJump = new Vector2(0, Mathf.Sqrt(50));
         m_anim = GetComponent<Animator>();
+        _healthBar.SetData(_maxHealth,Vector3.zero,true);
+        m_paramAttack = "isAttack";
     }
     
     void Update()
     {
+        if (m_isDeath) return;
         m_directX = Input.GetAxisRaw("Horizontal");
         if (!m_isJumpStart && !m_isAttack)
         {
@@ -49,26 +53,33 @@ public class PlayerController : MonoBehaviour
                     if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
                     {
                         m_isJumpStart = true;
-                        m_curAnim = TagConst.A_JUMP;
+                        m_curAnim = TagConst.A_SPRINGY;
                         m_isJump = true;
                         m_isLand = false;
                     }else if(m_directX == 0) m_curAnim = TagConst.A_IDLE;
                 }
-                else if (!m_isLand && m_rg.velocity.y < 0)
+                else if (!m_isLand)
                 {
-                    m_curAnim = TagConst.A_Fall;
-                    m_isLand = false;
+                    if (m_rg.velocity.y < 0)
+                    {
+                        m_curAnim = TagConst.A_Fall;
+                        m_isLand = false;
+                    }else if(m_rg.velocity.y > 0) m_curAnim = TagConst.A_JUMP;
                 }
             }
-
-            if (Input.GetKeyDown(KeyCode.Space) && !m_isAttack && !m_isJumpStart)
+            if (Input.GetKeyDown(KeyCode.Space) && !m_isJumpStart)
             {
                 m_isAttack = true;
-                m_rg.velocity = Vector2.zero;
-                m_anim.SetTrigger("isAttack");
+                m_anim.SetTrigger(m_paramAttack);
+                if (m_rg.velocity.y != 0)
+                {
+                    m_rg.velocity = Vector2.zero;
+                    m_curAnim = TagConst.A_Fall;
+                }
             }
-            PlayAnim(m_curAnim);
         }
+        
+        PlayAnim(m_curAnim);
     }
 
     public void PlayAnim(string anim)
@@ -85,10 +96,10 @@ public class PlayerController : MonoBehaviour
         m_rg.velocity = m_velJump;
         m_isJumpStart = false;
     }
-
+    
     private void EndAttack()
     {
-        m_anim.ResetTrigger("isAttack");
+        m_anim.ResetTrigger(m_paramAttack);
         m_isAttack = false;
     }
 
@@ -104,7 +115,6 @@ public class PlayerController : MonoBehaviour
             PlayAnim(m_curAnim);
             m_isLand = true;
         }
-        
     }
 
     private void OnCollisionExit2D(Collision2D other)
@@ -113,13 +123,15 @@ public class PlayerController : MonoBehaviour
         if (gObj.CompareTag(TagConst.GROUND)) m_isLand = false;
     }
     
-    public void PlayAnimHit()
+
+    public void Hitted()
     {
         if (m_isHit) return;
         m_isHit = true;
         m_anim.SetBool("isHit",m_isHit);
         Physics2D.IgnoreLayerCollision(3,6);
         StartCoroutine(CountDownResetHit());
+        ChangeHealth(-20);
     }
 
     private IEnumerator CountDownResetHit()
@@ -129,9 +141,20 @@ public class PlayerController : MonoBehaviour
         m_anim.SetBool("isHit",m_isHit);
         Physics2D.IgnoreLayerCollision(3,6,false);
     }
-
     private void Landed()
     {
         m_isJumpEnd = false;
+    }
+
+    private void ChangeHealth(float val)
+    {
+        _healthBar.ChangeHealth(val);
+        m_isDeath = _healthBar.CheckOutOfHealth();
+        if (m_isDeath)
+        {
+            m_anim.ResetTrigger("isAttack");
+            m_anim.SetBool("isHit",false);
+            m_anim.SetTrigger(TagConst.ParamDeath);
+        }
     }
 }

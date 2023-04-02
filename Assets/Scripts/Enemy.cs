@@ -1,24 +1,45 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour
 {
+    [SerializeField]
+    protected HealthBar _healthBar;
+    [SerializeField]
+    private Vector3 _healthBarOffSet;
+    [SerializeField] private float _maxHealth = 100;
     protected Animator m_anim;
     protected Rigidbody2D m_rg;
-    protected bool isDeath;
+    protected bool isDeath,m_isHit;
     protected PlayerController m_player;
     protected string m_animPass, m_animCur;
-    
+
+
+
     protected virtual void Start()
     {
         m_anim = GetComponent<Animator>();
         m_rg = GetComponent<Rigidbody2D>();
         ActiveAnimator(false);
         m_player = GameObject.FindWithTag(TagConst.PLAYER).GetComponent<PlayerController>();
+        _healthBar.SetData(_maxHealth,_healthBarOffSet);
     }
 
     protected virtual void Update()
     {
+    }
+
+    protected Vector2 GetVelocityHit()
+    {
+        return Vector2.right * (1.2f - 0.45f) / 0.3f * FindDirPlayer() * -1;
+    }
+
+    protected int FindDirPlayer()
+    {
+        int d = 1;
+        if ((m_player.transform.position.x - transform.position.x) < 0) d = -1;
+        return d;
     }
 
     protected void PlayAnim(string anim)
@@ -40,22 +61,18 @@ public class Enemy : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (!GameManager.Ins.isOverGame && col.gameObject.CompareTag(TagConst.CAM) && !m_anim.enabled) ActiveAnimator(true);
-        if (col.gameObject.CompareTag(TagConst.SWORD))
-        {
-            isDeath = true;
-            m_anim.SetTrigger(TagConst.ParamDeath);
-            m_rg.velocity = new Vector2(0f, 0f);
-        }
+        GameObject gObj = col.gameObject;
+        if (!GameManager.Ins.isOverGame && gObj.CompareTag(TagConst.CAM) && !m_anim.enabled) ActiveAnimator(true);
+        if (gObj.CompareTag(TagConst.SWORD)) Hit();
+        if(gObj.CompareTag(TagConst.PLAYER) && m_player) m_player.Hitted();
     }
 
-    private void OnTriggerStay2D(Collider2D other)
+    private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag(TagConst.PLAYER) && m_player) m_player.PlayAnimHit();
+        GameObject gObj = other.gameObject;
+        if(gObj.CompareTag(TagConst.DEATHZONE)) Death();
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if(collision.gameObject.CompareTag(TagConst.PLAYER) && m_player) m_player.PlayAnimHit();
-    }
+    public abstract void Hit();
+
 }

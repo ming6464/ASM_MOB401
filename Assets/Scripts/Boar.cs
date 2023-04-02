@@ -8,8 +8,8 @@ public class Boar : Enemy
     [SerializeField]
     private float _positionEndX,m_posEndY,_speedRunning,_speedWalking;
     private int m_direction;
-    private float m_posMaxX,m_posMinX,m_posMinY,m_posMaxY;
-    private bool m_isIdling,m_isRunning;
+    private float m_posMaxX,m_posMinX,m_posMinY,m_posMaxY,m_nextDestination;
+    private bool m_isIdling,m_isRunning,m_isBehind;
 
     protected override void Start()
     {
@@ -34,14 +34,14 @@ public class Boar : Enemy
         if (m_posMinY > m_posMaxY) (m_posMinY, m_posMaxY) = (m_posMaxY, m_posMinY);
         m_posMinY -= 1f;
         m_posMaxY += 1f;
-        transform.localScale = new Vector3(m_direction, transform.localScale.y, 0);
-        
+        UpdateDir();
+
     }
 
     protected override void Update()
     {
         if (!this.m_anim.enabled) return;
-        if (!isDeath)
+        if (!isDeath && !m_isHit)
         {
             m_animCur = TagConst.A_IDLE;
             if (!m_isIdling)
@@ -56,18 +56,41 @@ public class Boar : Enemy
                 }
                 m_rg.velocity = new Vector2(speed * m_direction, m_rg.velocity.y);
                 float posCur = transform.position.x;
-                if ((posCur - m_posMinX) * (m_posMaxX - posCur) < 0)
+                if ((m_nextDestination - transform.position.x) * m_direction < 0)
                 {
                     m_rg.velocity = new Vector2(0, 0);
-                    posCur = Mathf.Clamp(posCur, m_posMinX, m_posMaxX);
                     transform.position = new Vector3(posCur, transform.position.y, 0f);
                     StartCoroutine(Idled());
                 }
             }
-            this.PlayAnim(m_animCur);
+        }
+        this.PlayAnim(m_animCur);
+    }
+
+    public override void Hit()
+    {
+        m_rg.velocity = GetVelocityHit();
+        m_isHit = true;
+        m_animCur = "Hit";
+        if (_healthBar)
+        {
+            _healthBar.ChangeHealth(-35);
+            if (_healthBar.CheckOutOfHealth())
+            {
+                isDeath = true;
+                m_anim.SetTrigger(TagConst.ParamDeath);
+                m_rg.velocity = new Vector2(0f, 0f);
+            }
         }
     }
-    
+    private void EndHit()
+    {
+        m_isIdling = false;
+        m_isHit = false;
+        m_direction = FindDirPlayer();
+        UpdateDir();
+    }
+
     private IEnumerator Idled()
     {
         m_isIdling = true;
@@ -77,9 +100,15 @@ public class Boar : Enemy
             m_isRunning = false;
             m_isIdling = false;
             m_direction *= -1;
-            transform.localScale = new Vector3(m_direction, transform.localScale.y, 0);
+            UpdateDir();
         }
-        
+    }
+
+    private void UpdateDir()
+    {
+        transform.localScale = new Vector3(m_direction, transform.localScale.y, 0);
+        m_nextDestination = m_posMaxX;
+        if (m_direction < 0) m_nextDestination = m_posMinX;
     }
 
     void AbilityUpdate()
@@ -95,11 +124,7 @@ public class Boar : Enemy
         {
             int d = 1;
             if (x < transform.position.x) d = -1;
-            if (d == m_direction)
-            {
-                m_isRunning = true;
-                return;
-            }
+            if (d == m_direction) m_isRunning = true;
         }
     }
 }
