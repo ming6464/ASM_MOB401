@@ -23,6 +23,6 @@ public class BackgroundScroll : MonoBehaviour
         if (m_passX < 0) m_dx = 1;
         else if (m_passX > 0) m_dx = -1;
         m_passX = _player.position.x;
-        m_sp.material.mainTextureOffset += new Vector2(m_dx * _speed * Time.deltaTime, 0);
+        m_sp.material.mainTextureOffset += new Vector2(m_dx * _speed * 0.5f * Time.deltaTime, 0);
     }
 }

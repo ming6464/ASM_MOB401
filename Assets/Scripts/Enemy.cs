@@ -65,14 +65,9 @@ public abstract class Enemy : MonoBehaviour
         if (!GameManager.Ins.isOverGame && gObj.CompareTag(TagConst.CAM) && !m_anim.enabled) ActiveAnimator(true);
         if (gObj.CompareTag(TagConst.SWORD)) Hit();
         if(gObj.CompareTag(TagConst.PLAYER) && m_player) m_player.Hitted();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        GameObject gObj = other.gameObject;
         if(gObj.CompareTag(TagConst.DEATHZONE)) Death();
     }
-
+    
     public abstract void Hit();
 
 }

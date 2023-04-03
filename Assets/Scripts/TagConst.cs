@@ -6,6 +6,7 @@ public static class TagConst{
     public const string ENEMY = "Enemy";
     public const string ParamDeath = "isDeath";
     public const string DEATHZONE = "DeathZone";
+    public const string FINISH = "Finish";
 
     public const string A_JUMP = "Jump",
         A_Run = "Run",

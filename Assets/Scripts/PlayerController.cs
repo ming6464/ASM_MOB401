@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
         m_anim = GetComponent<Animator>();
         _healthBar.SetData(_maxHealth,Vector3.zero,true);
         m_paramAttack = "isAttack";
+        if(m_rg) m_rg.constraints = RigidbodyConstraints2D.FreezeRotation;
+        Physics2D.IgnoreLayerCollision(3,6,false);
     }
     
     void Update()
@@ -122,7 +124,22 @@ public class PlayerController : MonoBehaviour
         GameObject gObj = other.gameObject;
         if (gObj.CompareTag(TagConst.GROUND)) m_isLand = false;
     }
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        GameObject gObj = other.gameObject;
+        
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        GameObject gObj = col.gameObject;
+        if (gObj.CompareTag(TagConst.FINISH))
+        {
+            GameManager.Ins.StateGame(true);
+        }else if (gObj.CompareTag(TagConst.DEATHZONE)) End();
+    }
+
 
     public void Hitted()
     {
@@ -150,11 +167,20 @@ public class PlayerController : MonoBehaviour
     {
         _healthBar.ChangeHealth(val);
         m_isDeath = _healthBar.CheckOutOfHealth();
-        if (m_isDeath)
-        {
-            m_anim.ResetTrigger("isAttack");
-            m_anim.SetBool("isHit",false);
-            m_anim.SetTrigger(TagConst.ParamDeath);
-        }
+        if (m_isDeath) End();
+    }
+
+    private void End()
+    {
+        m_isDeath = true;
+        m_anim.ResetTrigger("isAttack");
+        m_anim.SetBool("isHit",false);
+        m_anim.SetTrigger(TagConst.ParamDeath);
+        m_rg.constraints = RigidbodyConstraints2D.FreezeAll;
+    }
+
+    private void Death()
+    {
+        GameManager.Ins.StateGame(false);
     }
 }
