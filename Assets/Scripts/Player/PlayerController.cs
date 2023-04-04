@@ -121,18 +121,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnCollisionStay2D(Collision2D col)
+    {
+        GameObject gObj = col.gameObject;
+        if (gObj.CompareTag(TagConst.GROUND)) m_isLand = true;
+    }
+
     private void OnCollisionExit2D(Collision2D other)
     {
         GameObject gObj = other.gameObject;
         if (gObj.CompareTag(TagConst.GROUND)) m_isLand = false;
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        GameObject gObj = other.gameObject;
-        
-    }
-
+    
     private void OnTriggerEnter2D(Collider2D col)
     {
         GameObject gObj = col.gameObject;

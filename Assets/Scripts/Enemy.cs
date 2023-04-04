@@ -1,13 +1,12 @@
-using System;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 public abstract class Enemy : MonoBehaviour
 {
     protected Animator m_anim;
     protected Rigidbody2D m_rg;
-    protected bool isDeath,m_isHit; 
-    protected PlayerController m_player;
+    protected bool isDeath, m_isHit, m_isSeePlayer,m_isPlayerAttack;
+    private PlayerController m_player;
     protected string m_animPass, m_animCur;
 
     [SerializeField]
@@ -17,10 +16,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private float _maxHealth = 100;
     [SerializeField] private string _name;
     [SerializeField] private int _point,_damage;
-
-    private bool m_isPlayerAttack;
-
-
+    
 
     protected virtual void Start()
     {
@@ -58,12 +54,7 @@ public abstract class Enemy : MonoBehaviour
 
     private void Death()
     {
-        if (m_isPlayerAttack)
-        {
-            Debug.Log(_name + "/" + _point + "/" + Data.GetData(false,TagConst.NameEnemy.BOAR));
-            Data.UpdateData(false,_name,_point);
-            Debug.Log("[" + Data.GetData(false,TagConst.NameEnemy.BOAR));
-        }
+        if (m_isPlayerAttack) Data.UpdateData(false,_name,_point);
         Destroy(this.gameObject);
     }
     public void ActiveAnimator(bool isActive)
@@ -76,7 +67,6 @@ public abstract class Enemy : MonoBehaviour
         if (!GameManager.Ins.isOverGame && gObj.CompareTag(TagConst.CAM) && !m_anim.enabled) ActiveAnimator(true);
         if (gObj.CompareTag(TagConst.PLAYER) && m_player)
         {
-            m_isPlayerAttack = true;
             m_player.OnHit(_damage);
         }
         if (gObj.CompareTag(TagConst.DEATHZONE))
@@ -85,7 +75,11 @@ public abstract class Enemy : MonoBehaviour
             Death();
         }
     }
-    
+
+    private void SeePlayer(bool isSee)
+    {
+        m_isSeePlayer = isSee;
+    }
     public abstract void OnHit(int damage);
 
 }
