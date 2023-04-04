@@ -4,16 +4,21 @@ using UnityEngine.UI;
 
 public abstract class Enemy : MonoBehaviour
 {
+    protected Animator m_anim;
+    protected Rigidbody2D m_rg;
+    protected bool isDeath,m_isHit; 
+    protected PlayerController m_player;
+    protected string m_animPass, m_animCur;
+
     [SerializeField]
     protected HealthBar _healthBar;
     [SerializeField]
     private Vector3 _healthBarOffSet;
     [SerializeField] private float _maxHealth = 100;
-    protected Animator m_anim;
-    protected Rigidbody2D m_rg;
-    protected bool isDeath,m_isHit;
-    protected PlayerController m_player;
-    protected string m_animPass, m_animCur;
+    [SerializeField] private string _name;
+    [SerializeField] private int _point,_damage;
+
+    private bool m_isPlayerAttack;
 
 
 
@@ -53,6 +58,12 @@ public abstract class Enemy : MonoBehaviour
 
     private void Death()
     {
+        if (m_isPlayerAttack)
+        {
+            Debug.Log(_name + "/" + _point + "/" + Data.GetData(false,TagConst.NameEnemy.BOAR));
+            Data.UpdateData(false,_name,_point);
+            Debug.Log("[" + Data.GetData(false,TagConst.NameEnemy.BOAR));
+        }
         Destroy(this.gameObject);
     }
     public void ActiveAnimator(bool isActive)
@@ -63,11 +74,18 @@ public abstract class Enemy : MonoBehaviour
     {
         GameObject gObj = col.gameObject;
         if (!GameManager.Ins.isOverGame && gObj.CompareTag(TagConst.CAM) && !m_anim.enabled) ActiveAnimator(true);
-        if (gObj.CompareTag(TagConst.SWORD)) Hit();
-        if(gObj.CompareTag(TagConst.PLAYER) && m_player) m_player.Hitted();
-        if(gObj.CompareTag(TagConst.DEATHZONE)) Death();
+        if (gObj.CompareTag(TagConst.PLAYER) && m_player)
+        {
+            m_isPlayerAttack = true;
+            m_player.OnHit(_damage);
+        }
+        if (gObj.CompareTag(TagConst.DEATHZONE))
+        {
+            m_isPlayerAttack = false;
+            Death();
+        }
     }
     
-    public abstract void Hit();
+    public abstract void OnHit(int damage);
 
 }

@@ -12,7 +12,7 @@ public class MenuDialog : MonoBehaviour
     private class ContentInfo
     {
         public GameObject obj;
-        public TextMeshProUGUI pointText, coinText;
+        public TextMeshProUGUI scoreText, coinText;
     }
     [Serializable]
     private class ContentKillEnemy
@@ -47,14 +47,13 @@ public class MenuDialog : MonoBehaviour
         if(_toggle.btnInfo) _toggle.btnInfo.onClick.AddListener(HandleShowInfo);
         if(_toggle.btnEnemyKilled) _toggle.btnEnemyKilled.onClick.AddListener(HandleShowEnemyKilled);
     }
-
     public void ShowDialog(bool isPause = true,bool isWin = false)
     {
         if (_titleText)
         {
-            string text = "Game Over";
-            if (isWin)text = "You Won";
-            else if (isPause) text = "Pause Game";
+            string text = "Over!";
+            if (isWin)text = "Won!";
+            else if (isPause) text = "Pause!";
             _titleText.text = text;
         }
         
@@ -65,6 +64,11 @@ public class MenuDialog : MonoBehaviour
         _toggle.btnRestart.gameObject.SetActive(!isWin);
         _toggle.btnNext.gameObject.SetActive(isWin);
         _toggle.btnClose.gameObject.SetActive(isPause);
+        _ctInfo.coinText.text = "Coin : " + Data.GetData(true, TagConst.NameInfo.COIN);
+        _ctInfo.scoreText.text = "Score : " + Data.GetData(true, TagConst.NameInfo.SCORE);
+        _ctKillEnemy.boarText.text = " X "  + Data.GetData(false, TagConst.NameEnemy.BOAR);
+        _ctKillEnemy.snailText.text = " X "  + Data.GetData(false, TagConst.NameEnemy.SNAIL);
+        _ctKillEnemy.beeText.text = " X " + Data.GetData(false, TagConst.NameEnemy.BEE);
     }
 
     private void HandleClose()

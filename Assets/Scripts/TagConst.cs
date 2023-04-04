@@ -1,8 +1,20 @@
+using System;
+
 public static class TagConst{
+    public struct NameEnemy
+    {
+        public const string BOAR = "boar", SNAIL = "snail",BEE = "bee";
+    }
+    
+    public struct NameInfo
+    {
+        public const string SCORE = "score", COIN = "coint";
+    }
+
     public const string GROUND = "Ground";
     public const string PLAYER = "Player";
     public const string CAM = "MainCamera";
-    public const string SWORD = "Sword";
+    public const string PLAYERSWORD = "PlayerSword";
     public const string ENEMY = "Enemy";
     public const string ParamDeath = "isDeath";
     public const string DEATHZONE = "DeathZone";

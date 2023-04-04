@@ -67,14 +67,14 @@ public class Boar : Enemy
         this.PlayAnim(m_animCur);
     }
 
-    public override void Hit()
+    public override void OnHit(int damage)
     {
         m_rg.velocity = GetVelocityHit();
         m_isHit = true;
         m_animCur = "Hit";
         if (_healthBar)
         {
-            _healthBar.ChangeHealth(-35);
+            _healthBar.ChangeHealth(damage * -1);
             if (_healthBar.CheckOutOfHealth())
             {
                 isDeath = true;
