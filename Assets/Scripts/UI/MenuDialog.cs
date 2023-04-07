@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -12,7 +10,7 @@ public class MenuDialog : MonoBehaviour
     private class ContentInfo
     {
         public GameObject obj;
-        public TextMeshProUGUI scoreText, coinText;
+        public TextMeshProUGUI scoreText;
     }
     [Serializable]
     private class ContentKillEnemy
@@ -32,10 +30,15 @@ public class MenuDialog : MonoBehaviour
     [SerializeField] private ContentKillEnemy _ctKillEnemy;
     [SerializeField] private Toggle _toggle;
 
+    [SerializeField]
+    private GameObject _iconCoin;
+
     private bool m_isWin;
     void Start()
     {
         AddAction();
+        _titleText.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
+        _iconCoin.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
     private void AddAction()
@@ -64,8 +67,7 @@ public class MenuDialog : MonoBehaviour
         _toggle.btnRestart.gameObject.SetActive(!isWin);
         _toggle.btnNext.gameObject.SetActive(isWin);
         _toggle.btnClose.gameObject.SetActive(isPause);
-        _ctInfo.coinText.text = "Coin : " + Data.GetData(true, TagConst.NameInfo.COIN);
-        _ctInfo.scoreText.text = "Score : " + Data.GetData(true, TagConst.NameInfo.SCORE);
+        _ctInfo.scoreText.text = Data.GetData(true, TagConst.NameInfo.SCORE).ToString();
         _ctKillEnemy.boarText.text = " X "  + Data.GetData(false, TagConst.NameEnemy.BOAR);
         _ctKillEnemy.snailText.text = " X "  + Data.GetData(false, TagConst.NameEnemy.SNAIL);
         _ctKillEnemy.beeText.text = " X " + Data.GetData(false, TagConst.NameEnemy.BEE);

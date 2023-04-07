@@ -8,7 +8,7 @@ public static class TagConst{
     
     public struct NameInfo
     {
-        public const string SCORE = "score", COIN = "coint";
+        public const string SCORE = "score";
     }
 
     public const string GROUND = "Ground";
@@ -18,6 +18,7 @@ public static class TagConst{
     public const string ParamDeath = "isDeath";
     public const string DEATHZONE = "DeathZone";
     public const string FINISH = "Finish";
+    public const string KEY = "Key";
 
     public const string A_JUMP = "Jump",
         A_Run = "Run",

@@ -1,8 +1,11 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 
 public abstract class Enemy : MonoBehaviour
 {
+    [SerializeField] private GameObject _key;
+    [SerializeField] protected bool _isBoss;
     protected Animator m_anim;
     protected Rigidbody2D m_rg;
     protected bool isDeath, m_isHit, m_isSeePlayer,m_isPlayerAttack;
@@ -54,7 +57,16 @@ public abstract class Enemy : MonoBehaviour
 
     private void Death()
     {
-        if (m_isPlayerAttack) Data.UpdateData(false,_name,_point);
+        if (m_isPlayerAttack)
+        {
+            Data.UpdateData(_name,_point);
+        }
+
+        if (_isBoss && _key)
+        {
+            GameObject newKey = Instantiate(_key, transform.position, quaternion.identity);
+            newKey.GetComponent<Rigidbody2D>().velocity = new Vector2(2 * FindDirPlayer(), 2);
+        }
         Destroy(this.gameObject);
     }
     public void ActiveAnimator(bool isActive)

@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private float m_directX, m_directY, m_passDirectX;
     private Rigidbody2D m_rg;
     private Vector2 m_velJump;
-    private bool m_isJump, m_isLand, m_isJumpStart, m_isJumpEnd, m_isAttack, m_isHit, m_isDeath;
+    private bool m_isJump, m_isLand, m_isJumpStart, m_isJumpEnd, m_isAttack, m_isHit, m_isDeath,m_isHasKey;
     private Animator m_anim;
     private string m_passAnim, m_curAnim,m_paramAttack,m_paramHit;
     void Start()
@@ -136,10 +136,14 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D col)
     {
         GameObject gObj = col.gameObject;
-        if (gObj.CompareTag(TagConst.FINISH))
+        if (gObj.CompareTag(TagConst.FINISH) && m_isHasKey) GameManager.Ins.StateGame(true);
+        else if (gObj.CompareTag(TagConst.DEATHZONE)) End();
+        if (gObj.CompareTag(TagConst.KEY))
         {
-            GameManager.Ins.StateGame(true);
-        }else if (gObj.CompareTag(TagConst.DEATHZONE)) End();
+            UIManager.Ins.ShowKey();
+            m_isHasKey = true;
+            Destroy(gObj);
+        }
     }
 
 
@@ -165,7 +169,7 @@ public class PlayerController : MonoBehaviour
         m_isJumpEnd = false;
     }
 
-    private void ChangeHealth(float val)
+    public void ChangeHealth(float val)
     {
         _healthBar.ChangeHealth(val);
         m_isDeath = _healthBar.CheckOutOfHealth();

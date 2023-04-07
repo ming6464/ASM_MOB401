@@ -3579,9 +3579,9 @@ TextureImporter:
         x: 16
         y: 160
         width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 14
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5714286}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3600,9 +3600,9 @@ TextureImporter:
         x: 32
         y: 160
         width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 14
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5714286}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4335,9 +4335,9 @@ TextureImporter:
         x: 128
         y: 128
         width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 15
+      alignment: 9
+      pivot: {x: 0.5, y: 0.53333336}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4356,9 +4356,9 @@ TextureImporter:
         x: 144
         y: 128
         width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 15
+      alignment: 9
+      pivot: {x: 0.5, y: 0.53333336}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -7139,7 +7139,7 @@ TextureImporter:
       Props-Rocks_330: 349532948
       Props-Rocks_59: -2060400856
       Props-Rocks_189: 1317780578
-      Props-Rocks_251: 1188799348
+      Props-Rocks_152: 1842334392
       Props-Rocks_67: 1425294505
       Props-Rocks_44: -58315178
       Props-Rocks_270: -379941574
@@ -7184,14 +7184,14 @@ TextureImporter:
       Props-Rocks_124: 826009347
       Props-Rocks_256: 646010386
       Props-Rocks_253: -1009123590
-      Props-Rocks_56: 581024721
-      Props-Rocks_281: -1642402740
+      Props-Rocks_264: 1760905824
       Props-Rocks_45: -1484442018
       Props-Rocks_190: 1795801227
+      Props-Rocks_56: 581024721
       Props-Rocks_233: -541931357
       Props-Rocks_84: 526419241
-      Props-Rocks_264: 1760905824
       Props-Rocks_116: 1190450780
+      Props-Rocks_281: -1642402740
       Props-Rocks_63: 521114754
       Props-Rocks_325: -1587988122
       Props-Rocks_147: 2134577808
@@ -7440,9 +7440,9 @@ TextureImporter:
       Props-Rocks_297: -466314203
       Props-Rocks_307: 175881949
       Props-Rocks_104: -498306293
-      Props-Rocks_152: 1842334392
       Props-Rocks_161: 1691149280
       Props-Rocks_53: -203539910
+      Props-Rocks_251: 1188799348
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

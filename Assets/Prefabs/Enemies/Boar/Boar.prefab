@@ -309,15 +309,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d4df64f9850dd4e8554b8a4e66801b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _key: {fileID: 899007500287819903, guid: 3c8b9639cdc760d46b066c8385a4273c, type: 3}
+  _isBoss: 0
   _healthBar: {fileID: 974877177279432475}
   _healthBarOffSet: {x: 0, y: 0.35, z: 0}
   _maxHealth: 100
   _name: Boar
   _point: 15
   _damage: 25
+  _lengthRay: 1.5
   _positionEndX: -9.04
   _speedRunning: 3.6
-  _speedWalking: 2
+  _speedWalking: 2.5
 --- !u!212 &3710393550410239449
 SpriteRenderer:
   m_ObjectHideFlags: 0

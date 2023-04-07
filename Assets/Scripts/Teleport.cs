@@ -9,7 +9,7 @@ public class Teleport : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.gameObject.CompareTag(TagConst.PLAYER)){
-            if(Mathf.Abs(other.transform.position.x - transform.position.x) > 0.3f) other.transform.position = _nextPos.position;
+            if(Mathf.Abs(other.transform.position.x - transform.position.x) > 0.45f) other.transform.position = _nextPos.position;
         }
     }
 }
