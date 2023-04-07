@@ -8,6 +8,12 @@ public static class Data
     {
         public static int BOAR, SNAIL, BEE;
     }
+    private struct Audio
+    {
+        public static float SFX = 0.3f, MUSIC = 0.7f;
+    }
+
+    public static bool isPlayedPilot;
 
     public static void Reset()
     {
@@ -16,6 +22,7 @@ public static class Data
         EnemyKilled.BOAR = 0;
         EnemyKilled.SNAIL = 0;
         UIManager.Ins.UpdateScore(Info.SCORE);
+        AudioManager.Ins.PlayAudio(TagConst.MUSIC,false);
     }
 
     public static void UpdateData(string field, int val)
@@ -35,6 +42,20 @@ public static class Data
         }
         Info.SCORE += val;
         UIManager.Ins.UpdateScore(Info.SCORE);
+    }
+
+    public static void UpdateAudio(float val,bool isSfx)
+    {
+        if (isSfx) Audio.SFX = val;
+        else Audio.MUSIC = val;
+    }
+
+    public static float GetAudio(bool isSfx)
+    {
+        float val;
+        if (isSfx) val = Audio.SFX;
+        else val = Audio.MUSIC;
+        return val;
     }
 
     public static int GetData(bool isInfo, string field)

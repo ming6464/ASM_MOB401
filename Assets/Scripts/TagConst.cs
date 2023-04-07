@@ -27,4 +27,11 @@ public static class TagConst{
         A_IDLE = "Idle",
         A_WALK = "Walk",
         A_SPRINGY = "Springy";
+
+    public const string AUDIO_JUMP1 = "Jump1",
+        AUDIO_JUMP2 = "Jump2",
+        AUDIO_KILL = "Kill",
+        MUSIC = "Music",
+        AUDIO_PICKUP = "PickUp",
+        AUDIO_WIN = "Win",AUDIO_HIT = "Hit";
 }

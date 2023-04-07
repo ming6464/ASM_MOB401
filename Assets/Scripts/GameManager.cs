@@ -1,5 +1,7 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
@@ -8,8 +10,10 @@ public class GameManager : Singleton<GameManager>
     public Color low, high;
 
     [SerializeField] private MenuDialog _menuDialog;
+
     public override void Start()
     {
+        
     }
 
     public override void Update()

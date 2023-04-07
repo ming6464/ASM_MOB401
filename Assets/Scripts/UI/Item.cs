@@ -16,6 +16,7 @@ public class Item : MonoBehaviour
         GameObject gObj = col.gameObject;
         if (gObj.CompareTag(TagConst.PLAYER))
         {
+            AudioManager.Ins.PlayAudio(TagConst.AUDIO_PICKUP,true);
             gObj.GetComponent<PlayerController>().ChangeHealth(val);
             Destroy(this.gameObject);
         }

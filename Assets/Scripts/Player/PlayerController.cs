@@ -68,7 +68,10 @@ public class PlayerController : MonoBehaviour
                     {
                         m_curAnim = TagConst.A_Fall;
                         m_isLand = false;
-                    }else if(m_rg.velocity.y > 0) m_curAnim = TagConst.A_JUMP;
+                    }else if (m_rg.velocity.y > 0)
+                    {
+                        m_curAnim = TagConst.A_JUMP;
+                    }
                 }
             }
             if (Input.GetKeyDown(KeyCode.Space) && !m_isJumpStart)
@@ -80,6 +83,7 @@ public class PlayerController : MonoBehaviour
                     m_rg.velocity = Vector2.zero;
                     m_curAnim = TagConst.A_Fall;
                 }
+                PlayAudio(TagConst.AUDIO_HIT);
             }
         }
         
@@ -99,6 +103,7 @@ public class PlayerController : MonoBehaviour
     {
         m_rg.velocity = m_velJump;
         m_isJumpStart = false;
+        PlayAudio(TagConst.AUDIO_JUMP1);
     }
     
     private void EndAttack()
@@ -136,7 +141,11 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D col)
     {
         GameObject gObj = col.gameObject;
-        if (gObj.CompareTag(TagConst.FINISH) && m_isHasKey) GameManager.Ins.StateGame(true);
+        if (gObj.CompareTag(TagConst.FINISH) && m_isHasKey)
+        {
+            PlayAudio(TagConst.AUDIO_WIN);
+            GameManager.Ins.StateGame(true);
+        }
         else if (gObj.CompareTag(TagConst.DEATHZONE)) End();
         if (gObj.CompareTag(TagConst.KEY))
         {
@@ -166,6 +175,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Landed()
     {
+        PlayAudio(TagConst.AUDIO_JUMP2);
         m_isJumpEnd = false;
     }
 
@@ -188,5 +198,10 @@ public class PlayerController : MonoBehaviour
     private void Death()
     {
         GameManager.Ins.StateGame(false);
+    }
+
+    private void PlayAudio(string name)
+    {
+        AudioManager.Ins.PlayAudio(name,true);
     }
 }

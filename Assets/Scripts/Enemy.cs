@@ -67,6 +67,7 @@ public abstract class Enemy : MonoBehaviour
             GameObject newKey = Instantiate(_key, transform.position, quaternion.identity);
             newKey.GetComponent<Rigidbody2D>().velocity = new Vector2(2 * FindDirPlayer(), 2);
         }
+        AudioManager.Ins.PlayAudio(TagConst.AUDIO_KILL,true);
         Destroy(this.gameObject);
     }
     public void ActiveAnimator(bool isActive)

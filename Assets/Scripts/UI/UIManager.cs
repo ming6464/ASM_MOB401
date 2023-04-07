@@ -12,13 +12,11 @@ public class UIManager : Singleton<UIManager>
 
     public override void Start()
     {
-        this.MakeSingleton(false);
     }
 
     public override void Update()
     {
         base.Update();
-        
     }
 
     public void UpdateScore(int val)
@@ -30,5 +28,5 @@ public class UIManager : Singleton<UIManager>
     {
         _keyImg.gameObject.SetActive(true);
     }
-
+    
 }
