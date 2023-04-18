@@ -21,9 +21,8 @@ public class PilotScript : MonoBehaviour
         if (!Data.isPlayedPilot)
         {
             Data.isPlayedPilot = true;
-            m_isShow = true;
-            ShowPilot();
-        }
+            HandleShow();
+        }else HandleClose();
     }
 
     private void HandleClose()

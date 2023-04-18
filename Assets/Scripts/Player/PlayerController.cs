@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     private HealthBar _healthBar;
     [SerializeField]
     private float _moveSpeed,_maxHealth = 100;
+
     private float m_directX, m_directY, m_passDirectX;
     private Rigidbody2D m_rg;
     private Vector2 m_velJump;

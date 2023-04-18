@@ -317,6 +317,7 @@ MonoBehaviour:
   _name: Boar
   _point: 15
   _damage: 25
+  _highFriction: {fileID: 6200000, guid: f36cd1147eb90e349b4b89d58ad894bc, type: 2}
   _lengthRay: 1.5
   _positionEndX: -9.04
   _speedRunning: 3.6
@@ -415,7 +416,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f36cd1147eb90e349b4b89d58ad894bc, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0

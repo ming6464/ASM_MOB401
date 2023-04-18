@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Boar : Enemy
 {
+    [SerializeField] private PhysicsMaterial2D _highFriction;
     [SerializeField]
     private float _lengthRay,_positionEndX,_speedRunning,_speedWalking;
     private int m_direction;
@@ -33,7 +34,7 @@ public class Boar : Enemy
 
         width = GetComponent<BoxCollider2D>().size.x;
         UpdateDir();
-
+        m_rg.sharedMaterial = _highFriction;
     }
     
 
@@ -55,8 +56,7 @@ public class Boar : Enemy
                 m_animCur = TagConst.A_WALK;
                 if ((m_nextDestination - transform.position.x) * m_direction < 0) ChangeDir();
             }
-
-            m_rg.velocity = new Vector2(speed * m_direction, m_rg.velocity.y);
+            transform.Translate(Vector3.right * m_direction * -1 * speed * Time.deltaTime);
         }
         this.PlayAnim(m_animCur);
     }
@@ -106,12 +106,14 @@ public class Boar : Enemy
         if (_isBoss) return;
         this.m_isPlayerAttack = true;
         m_rg.velocity = GetVelocityHit();
+        m_rg.sharedMaterial = null;
         m_isHit = true;
         m_animCur = "Hit";
         this.PlayAnim(m_animCur);
     }
     private void EndHit()
     {
+        m_rg.sharedMaterial = _highFriction;
         m_isIdling = false;
         m_isHit = false;
         m_direction = FindDirPlayer();
