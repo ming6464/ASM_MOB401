@@ -228,6 +228,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sliderHealth: {fileID: 861438334370501663}
+--- !u!1 &6649537026038608396
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2446484697354317493}
+  m_Layer: 3
+  m_Name: Foot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2446484697354317493
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649537026038608396}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.332, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8614812386080094173}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6906690926707070546
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,6 +551,7 @@ Transform:
   m_Children:
   - {fileID: 4710042618219840555}
   - {fileID: 2186151369643030733}
+  - {fileID: 2446484697354317493}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
@@ -545,12 +577,15 @@ MonoBehaviour:
   _damage: 25
   _highFriction: {fileID: 6200000, guid: f36cd1147eb90e349b4b89d58ad894bc, type: 2}
   _lengthRay: 1.5
-  _positionEndX: 42.18
   _speedRunning: 5
-  _speedWalking: 3
-  _layerDeathZone:
+  _speedWalking: 2.5
+  _foot: {fileID: 2446484697354317493}
+  _layerGround:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 2048
+  _layWall:
+    serializedVersion: 2
+    m_Bits: 8192
 --- !u!212 &8614812386080094174
 SpriteRenderer:
   m_ObjectHideFlags: 0

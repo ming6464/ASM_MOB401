@@ -91,6 +91,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 865edb58dc315ba44ba8197ed995714b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1713971863726925264
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5286322476525655925}
+  m_Layer: 3
+  m_Name: Foot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5286322476525655925
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713971863726925264}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.332, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3710393550410239450}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1957235922934426709
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,6 +323,7 @@ Transform:
   m_Children:
   - {fileID: 409105943605542444}
   - {fileID: 191590171}
+  - {fileID: 5286322476525655925}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
@@ -317,12 +349,15 @@ MonoBehaviour:
   _damage: 25
   _highFriction: {fileID: 6200000, guid: f36cd1147eb90e349b4b89d58ad894bc, type: 2}
   _lengthRay: 1.5
-  _positionEndX: -9.04
   _speedRunning: 3.6
-  _speedWalking: 2.5
-  _layerDeathZone:
+  _speedWalking: 1.5
+  _foot: {fileID: 5286322476525655925}
+  _layerGround:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 2048
+  _layWall:
+    serializedVersion: 2
+    m_Bits: 8192
 --- !u!212 &3710393550410239449
 SpriteRenderer:
   m_ObjectHideFlags: 0

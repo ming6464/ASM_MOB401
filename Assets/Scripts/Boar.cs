@@ -1,40 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class Boar : Enemy
 {
     [SerializeField] private PhysicsMaterial2D _highFriction;
-    [SerializeField]
-    private float _lengthRay,_positionEndX,_speedRunning,_speedWalking;
+    
+    [SerializeField] private float _lengthRay,_speedRunning,_speedWalking;
 
-    [SerializeField] private LayerMask _layerDeathZone;
+    [SerializeField] private Transform _foot;
+    
+    [SerializeField] private LayerMask _layerGround,_layWall;
+    
     private int m_direction;
-    private float m_posMaxX,m_posMinX,m_nextDestination,m_passX;
-    private bool m_isIdling, m_isBehind;
-    private int m_countFrame,m_countStartFrame;
-    private float width;
+    private bool m_isIdling;
+    private float widthCol;
 
     protected override void Start()
     {
         base.Start();
-        float curX = transform.position.x;
-        
-        if (curX < _positionEndX)
-        {
-            m_direction = 1;
-            m_posMinX = transform.position.x;
-            m_posMaxX = _positionEndX;
-        }
-        else
-        {
-            m_direction = -1;
-            m_posMaxX = transform.position.x;
-            m_posMinX = _positionEndX;
-        }
-
-        width = GetComponent<BoxCollider2D>().size.x;
+        m_direction = 1;
+        widthCol = GetComponent<BoxCollider2D>().size.x;
         UpdateDir();
         m_rg.sharedMaterial = _highFriction;
     }
@@ -43,51 +31,66 @@ public class Boar : Enemy
     protected override void Update()
     {
         if (!this.m_anim.enabled || m_isHit || isDeath) return;
-        if (CheckDeathZoneBelow()) ChangeDir();
-        else
+
+        float speed = 0;
+        
+        if (CanMove())
         {
-            float speed = 0;
             if (this.m_isSeePlayer && !_isBoss)
             {
                 m_animCur = TagConst.A_Run;
                 speed = _speedRunning;
-            }
-            else if (!m_isIdling)
+            }else if (!m_isIdling)
             {
                 speed = _speedWalking;
                 m_animCur = TagConst.A_WALK;
-                if ((m_nextDestination - transform.position.x) * m_direction < 0) ChangeDir();
             }
             transform.Translate(Vector3.right * m_direction * -1 * speed * Time.deltaTime);
         }
+        
         this.PlayAnim(m_animCur);
     }
 
-    private bool CheckDeathZoneBelow()
+    private bool CanMove()
     {
-        bool check = false;
-        Vector2 startPos = transform.position + Vector3.left * width / 2;
-        Vector2 endPos = startPos + Vector2.down * _lengthRay;
-        if (Physics2D.Linecast(startPos,endPos , _layerDeathZone)
-            .collider)
+        Vector2 startPosNextBottom = _foot.position + Vector3.right * m_direction * widthCol / 2;
+        Vector2 endPosNextBottom = startPosNextBottom + Vector2.down * _lengthRay;
+        
+        Vector2 startPosPreBottom = startPosNextBottom - Vector2.right * m_direction * widthCol;
+        Vector2 endPosPreBottom = startPosPreBottom + Vector2.down * _lengthRay;
+        
+        Vector2 endPosNext = transform.position + Vector3.right * m_direction * (widthCol / 2 + 0.5f);
+        Vector2 startPosNext = transform.position;
+        
+        
+        Debug.DrawLine(startPosNextBottom, endPosNextBottom,Color.blue);
+        Debug.DrawLine(startPosPreBottom, endPosPreBottom,Color.red);
+        Debug.DrawLine(endPosNext, startPosNext,Color.magenta);
+        
+        if (Physics2D.Linecast(startPosPreBottom, endPosPreBottom, _layerGround).collider)
         {
-            if(m_direction < 0) check = true;
-            
-        }else if (Physics2D.Linecast(startPos + Vector2.right * width,endPos + Vector2.right * width, LayerMask.GetMask("DeathZone"))
-                  .collider)
-        {
-            if(m_direction > 0) check = true;
+            if (!Physics2D.Linecast(startPosNext, endPosNext, _layWall).collider)
+            {
+                RaycastHit2D[] hits = Physics2D.LinecastAll(startPosNextBottom, endPosNextBottom)?.Where(x => 
+                    (x.collider.CompareTag(TagConst.GROUND) || x.collider.CompareTag(TagConst.DEATHZONE))).ToArray();
+                if (hits.Length > 0)
+                {
+                    if (!hits[0].collider.CompareTag(TagConst.DEATHZONE)) return true;
+                }else if (this.m_isSeePlayer) return true;
+            }
+            ChangeDir();
+            return false;
         }
-        Debug.DrawLine(startPos, endPos,Color.red);
-        Debug.DrawLine(startPos + Vector2.right * width,endPos + Vector2.right * width,Color.blue);
 
-        return check;
+        if (Physics2D.Linecast(startPosNext, endPosNext, _layWall).collider) return false;
+        
+        return true;
     }
 
     private void ChangeDir()
     {
         if (m_animCur == TagConst.A_IDLE) return;
-        m_rg.velocity = Vector2.zero;
+        m_rg.velocity *= Vector2.up;
         m_animCur = TagConst.A_IDLE;
         StartCoroutine(Idled());
     }
@@ -137,7 +140,5 @@ public class Boar : Enemy
     private void UpdateDir()
     {
         transform.localScale = new Vector3(m_direction * Mathf.Abs(transform.localScale.x), transform.localScale.y, 0);
-        m_nextDestination = m_posMaxX;
-        if (m_direction < 0) m_nextDestination = m_posMinX;
     }
 }
