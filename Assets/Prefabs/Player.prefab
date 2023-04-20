@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2321468491402642247}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.2, y: -0.58, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -45,7 +45,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.19775748, y: -0.5728687}
+  m_Offset: {x: 0.022386074, y: 0.008287191}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -56,7 +56,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.441257, y: 0.08654904}
+  m_Size: {x: 0.48787212, y: 0.08177853}
   m_EdgeRadius: 0
 --- !u!1 &2321468492705199674
 GameObject:
@@ -163,6 +163,10 @@ MonoBehaviour:
   _healthBar: {fileID: 0}
   _moveSpeed: 4
   _maxHealth: 150
+  _foot: {fileID: 2321468491402642246}
+  _layerWall:
+    serializedVersion: 2
+    m_Bits: 8192
 --- !u!50 &2321468492705199654
 Rigidbody2D:
   serializedVersion: 4
@@ -197,7 +201,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.16902733, y: 0.0009468794}
+  m_Offset: {x: -0.16902733, y: 0.042449713}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5104167}
@@ -208,7 +212,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5030937, y: 1.221843}
+  m_Size: {x: 0.5030937, y: 1.1388373}
   m_EdgeRadius: 0
 --- !u!95 &2321468492705199650
 Animator:
@@ -297,9 +301,7 @@ PolygonCollider2D:
       - {x: 0.2876358, y: 0.37496573}
       - {x: 0.23163223, y: -0.10232586}
       - {x: -0.15544891, y: -0.21726257}
-      - {x: -0.43574905, y: 0.03840047}
-      - {x: -0.8714461, y: -0.37413335}
-      - {x: -0.59412, y: -0.688575}
+      - {x: -0.23346853, y: -0.29476744}
       - {x: -0.2236656, y: -0.7672852}
       - {x: 0.19111633, y: -0.68823254}
       - {x: 0.3917694, y: -0.51301956}

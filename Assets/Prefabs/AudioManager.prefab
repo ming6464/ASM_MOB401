@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sfxSound:
-  - auc: {fileID: 8300000, guid: e85d97a7ba6c18c42a90ccad37bd4318, type: 3}
+  - auc: {fileID: 8300000, guid: 7ad6f76d3f902f14a85bf9f5c6a16f4c, type: 3}
     name: PickUp
   - auc: {fileID: 8300000, guid: 923dd08c2b7c336459ee05911c6cc754, type: 3}
     name: Jump1
@@ -59,8 +59,10 @@ MonoBehaviour:
     name: Hit
   - auc: {fileID: 8300000, guid: 8f446932832775c4a9b2c69f637f00a4, type: 3}
     name: Win
+  - auc: {fileID: 8300000, guid: babf4f4bc8c617049afbcfb135d5f82b, type: 3}
+    name: Death
   musicSound:
-  - auc: {fileID: 8300000, guid: a0dbedc057b08c946b4dd29ac1f9e12d, type: 3}
+  - auc: {fileID: 8300000, guid: 819c764d1473ec549ac0222ddbef6ede, type: 3}
     name: Music
   musicSource: {fileID: 3240776652690461220}
   sfxSource: {fileID: 3240776652411659951}
@@ -234,7 +236,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a0dbedc057b08c946b4dd29ac1f9e12d, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 819c764d1473ec549ac0222ddbef6ede, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.179
   m_Pitch: 1

@@ -33,5 +33,7 @@ public static class TagConst{
         AUDIO_KILL = "Kill",
         MUSIC = "Music",
         AUDIO_PICKUP = "PickUp",
-        AUDIO_WIN = "Win",AUDIO_HIT = "Hit";
+        AUDIO_WIN = "Win",
+        AUDIO_HIT = "Hit",
+        AUDIO_DEATH = "Death";
 }

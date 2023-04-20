@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -10,10 +11,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float _moveSpeed,_maxHealth = 100;
 
+    [SerializeField] private Transform _foot;
+
+    [SerializeField] private LayerMask _layerWall;
+    
     private float m_directX, m_directY, m_passDirectX;
     private Rigidbody2D m_rg;
     private Vector2 m_velJump;
-    private bool m_isJump, m_isLand, m_isJumpStart, m_isJumpEnd, m_isAttack, m_isHit, m_isDeath,m_isHasKey;
+    private bool m_isJump, m_isLand, m_isJumpStart, m_isJumpEnd, m_isAttack, m_isHit, m_isDeath, m_isHasKey, m_isMove;
     private Animator m_anim;
     private string m_passAnim, m_curAnim,m_paramAttack,m_paramHit;
     void Start()
@@ -35,60 +40,84 @@ public class PlayerController : MonoBehaviour
         m_directX = Input.GetAxisRaw("Horizontal");
         if (!m_isJumpStart && !m_isAttack)
         {
-            if (m_directX != 0)
+            OnMove();
+
+            OnJump();
+            
+            OnAttack();
+        }
+        PlayAnim(m_curAnim);
+    }
+
+    private void OnMove()
+    {
+        if (m_directX != 0)
+        {
+            Vector3 startPos = _foot.position;
+            Vector3 endPos = startPos + Vector3.right * 0.6f * m_directX;
+
+            if (!Physics2D.Linecast(startPos, endPos, _layerWall).collider)
             {
                 transform.Translate(Vector3.right * (_moveSpeed * Time.deltaTime * m_directX));
-                if (m_directX != m_passDirectX)
-                {
-                    m_passDirectX = m_directX;
-                    transform.localScale = new Vector3(m_directX, 1, 0);
-                }
-
-                if (!m_isJump && m_isLand)
-                {
-                    m_isJumpEnd = false;
-                    m_curAnim = TagConst.A_Run;
-                }
+            }
+            
+            Debug.DrawLine(startPos,endPos,Color.red);
+            
+            if (m_directX != m_passDirectX)
+            {
+                m_passDirectX = m_directX;
+                transform.localScale = new Vector3(m_directX, 1, 0);
             }
 
-            if (!m_isJumpEnd)
+            if (!m_isJump && m_isLand)
             {
-                if (m_isLand && !m_isJump)
-                {
-                    if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-                    {
-                        m_isJumpStart = true;
-                        m_curAnim = TagConst.A_SPRINGY;
-                        m_isJump = true;
-                        m_isLand = false;
-                    }else if(m_directX == 0) m_curAnim = TagConst.A_IDLE;
-                }
-                else if (!m_isLand)
-                {
-                    if (m_rg.velocity.y < 0)
-                    {
-                        m_curAnim = TagConst.A_Fall;
-                        m_isLand = false;
-                    }else if (m_rg.velocity.y > 0)
-                    {
-                        m_curAnim = TagConst.A_JUMP;
-                    }
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Space) && !m_isJumpStart)
-            {
-                m_isAttack = true;
-                m_anim.SetTrigger(m_paramAttack);
-                if (m_rg.velocity.y != 0)
-                {
-                    m_rg.velocity = Vector2.zero;
-                    m_curAnim = TagConst.A_Fall;
-                }
-                PlayAudio(TagConst.AUDIO_HIT);
+                m_isJumpEnd = false;
+                m_curAnim = TagConst.A_Run;
             }
         }
-        
-        PlayAnim(m_curAnim);
+    }
+
+    private void OnJump()
+    {
+        if (!m_isJumpEnd)
+        {
+            if (m_isLand && !m_isJump)
+            {
+                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    m_isJumpStart = true;
+                    m_curAnim = TagConst.A_SPRINGY;
+                    m_isJump = true;
+                    m_isLand = false;
+                }else if(m_directX == 0) m_curAnim = TagConst.A_IDLE;
+            }
+            else if (!m_isLand)
+            {
+                if (m_rg.velocity.y < 0)
+                {
+                    m_curAnim = TagConst.A_Fall;
+                    m_isLand = false;
+                }else if (m_rg.velocity.y > 0)
+                {
+                    m_curAnim = TagConst.A_JUMP;
+                }
+            }
+        }
+    }
+
+    private void OnAttack()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && !m_isJumpStart)
+        {
+            m_isAttack = true;
+            m_anim.SetTrigger(m_paramAttack);
+            if (m_rg.velocity.y != 0)
+            {
+                m_rg.velocity = Vector2.zero;
+                m_curAnim = TagConst.A_Fall;
+            }
+            PlayAudio(TagConst.AUDIO_HIT);
+        }
     }
 
     public void PlayAnim(string anim)
@@ -189,6 +218,7 @@ public class PlayerController : MonoBehaviour
 
     private void End()
     {
+        PlayAudio(TagConst.AUDIO_DEATH);
         m_isDeath = true;
         m_anim.ResetTrigger(m_paramAttack);
         m_anim.SetBool(m_paramHit,false);

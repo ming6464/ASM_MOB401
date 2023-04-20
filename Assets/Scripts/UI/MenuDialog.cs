@@ -117,6 +117,7 @@ public class MenuDialog : MonoBehaviour
 
     private void HandleBack()
     {
+        AudioManager.Ins.PlayAudio(TagConst.MUSIC,false);
         Time.timeScale = 1f;
         SceneManager.LoadScene("Start");
     }

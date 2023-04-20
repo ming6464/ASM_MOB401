@@ -26,8 +26,8 @@ TagManager:
   - EnemyVisibleArea
   - Ground
   - ItemBlood
-  - 
-  - 
+  - Wall
+  - Camera
   - 
   - 
   - 
@@ -66,6 +66,9 @@ TagManager:
     locked: 0
   - name: Tilemap-NoCollision0
     uniqueID: 3550079533
+    locked: 0
+  - name: Tilemap-CollisionWall
+    uniqueID: 1800084953
     locked: 0
   - name: Tilemap-Collision
     uniqueID: 472961777

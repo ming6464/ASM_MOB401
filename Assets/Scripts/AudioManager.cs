@@ -17,8 +17,8 @@ public class AudioManager : Singleton<AudioManager>
     {
         base.Start();
         musicSource.loop = true;
-        sfxSource.volume = 0.3f;
-        musicSource.volume = 0.3f;
+        sfxSource.volume = Data.GetAudio(true);
+        musicSource.volume = Data.GetAudio(false);
     }
     
     public void PlayAudio(string name, bool isSFX)

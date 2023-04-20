@@ -4380,5 +4380,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3240776652000518115, guid: 275633a38259f1c47a0d45c521b26efd, type: 3}
+      propertyPath: sfxSound.Array.data[0].auc
+      value: 
+      objectReference: {fileID: 8300000, guid: 7ad6f76d3f902f14a85bf9f5c6a16f4c, type: 3}
+    - target: {fileID: 3240776652000518115, guid: 275633a38259f1c47a0d45c521b26efd, type: 3}
+      propertyPath: musicSound.Array.data[0].auc
+      value: 
+      objectReference: {fileID: 8300000, guid: 819c764d1473ec549ac0222ddbef6ede, type: 3}
+    - target: {fileID: 3240776652690461220, guid: 275633a38259f1c47a0d45c521b26efd, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 819c764d1473ec549ac0222ddbef6ede, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 275633a38259f1c47a0d45c521b26efd, type: 3}

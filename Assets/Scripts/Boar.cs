@@ -8,6 +8,8 @@ public class Boar : Enemy
     [SerializeField] private PhysicsMaterial2D _highFriction;
     [SerializeField]
     private float _lengthRay,_positionEndX,_speedRunning,_speedWalking;
+
+    [SerializeField] private LayerMask _layerDeathZone;
     private int m_direction;
     private float m_posMaxX,m_posMinX,m_nextDestination,m_passX;
     private bool m_isIdling, m_isBehind;
@@ -66,7 +68,7 @@ public class Boar : Enemy
         bool check = false;
         Vector2 startPos = transform.position + Vector3.left * width / 2;
         Vector2 endPos = startPos + Vector2.down * _lengthRay;
-        if (Physics2D.Linecast(startPos,endPos , LayerMask.GetMask("DeathZone"))
+        if (Physics2D.Linecast(startPos,endPos , _layerDeathZone)
             .collider)
         {
             if(m_direction < 0) check = true;

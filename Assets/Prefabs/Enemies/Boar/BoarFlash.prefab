@@ -355,10 +355,8 @@ EdgeCollider2D:
   m_EdgeRadius: 0
   m_Points:
   - {x: -0.22102737, y: -0.025360107}
-  - {x: -2.971939, y: -0.73161316}
-  - {x: -2.9484787, y: 0.18764305}
-  - {x: -2.9348373, y: 0.7222557}
-  - {x: -2.6664467, y: 0.64858437}
+  - {x: -2.5760384, y: -0.57186353}
+  - {x: -2.5136433, y: 0.7736058}
   - {x: -0.21247482, y: -0.025014877}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
@@ -550,6 +548,9 @@ MonoBehaviour:
   _positionEndX: 42.18
   _speedRunning: 5
   _speedWalking: 3
+  _layerDeathZone:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!212 &8614812386080094174
 SpriteRenderer:
   m_ObjectHideFlags: 0
