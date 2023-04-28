@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4956892212504417197}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,3 +48,5 @@ MonoBehaviour:
   low: {r: 1, g: 0, b: 0, a: 1}
   high: {r: 0.050943315, g: 1, b: 0.09599806, a: 1}
   _menuDialog: {fileID: 0}
+  _audioManager: {fileID: 3240776652000518115, guid: 275633a38259f1c47a0d45c521b26efd, type: 3}
+  _afteImagePool: {fileID: 6688298357312116639, guid: 074bbcffa20776147b414bfc93c51834, type: 3}

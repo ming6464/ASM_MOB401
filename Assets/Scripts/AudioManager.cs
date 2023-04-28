@@ -13,14 +13,21 @@ public class AudioManager : Singleton<AudioManager>
     private Sound[] sfxSound, musicSound;
     [SerializeField]
     private AudioSource musicSource, sfxSource;
+    
     public override void Start()
     {
-        base.Start();
+        if (!sfxSource) sfxSource = transform.Find("Sfx").GetComponent<AudioSource>();
+
+        if (!musicSource) musicSource = transform.Find("Music").GetComponent<AudioSource>();
+        
         musicSource.loop = true;
         sfxSource.volume = Data.GetAudio(true);
         musicSource.volume = Data.GetAudio(false);
+
+        DontLoad(true);
+
     }
-    
+
     public void PlayAudio(string name, bool isSFX)
     {
         Sound sound;
@@ -42,7 +49,6 @@ public class AudioManager : Singleton<AudioManager>
             musicSource.clip = sound.auc;
             musicSource.Play();
         }
-        
     }
 
     public void PauseOrResumeMusic(bool isPause)

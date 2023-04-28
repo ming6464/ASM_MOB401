@@ -36,7 +36,6 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     }
     public virtual void Start()
     {
-        MakeSingleton(true);
     }
     public virtual void Update()
     {
@@ -48,28 +47,20 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         
     }
 
-    public void MakeSingleton(bool destroyOnload)
+    public void DontLoad(bool destroyOnload)
     {
-        if (m_ins == null)
+        if (destroyOnload)
         {
-            m_ins = this as T;
-            if (destroyOnload)
-            {
-                var root = transform.root;
+            var root = transform.root;
 
-                if (root != transform)
-                {
-                    DontDestroyOnLoad(root);
-                }
-                else
-                {
-                    DontDestroyOnLoad(this.gameObject);
-                }
+            if (root != transform)
+            {
+                DontDestroyOnLoad(root);
             }
-        }
-        else
-        {
-            Destroy(gameObject);
+            else
+            {
+                DontDestroyOnLoad(this.gameObject);
+            }
         }
     }
 }

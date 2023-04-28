@@ -6,21 +6,32 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
     [SerializeField]
     private HealthBar _healthBar;
     [SerializeField]
-    private float _moveSpeed,_maxHealth = 100;
+    private float _moveSpeed,_maxHealth = 100,_lengthRayAhead = 0.2f;
 
-    [SerializeField] private Transform _foot;
-
-    [SerializeField] private LayerMask _layerWall;
+    [SerializeField] private LayerMask _layerWall,_layerGround;
     
-    private float m_directX, m_directY, m_passDirectX;
+    [SerializeField] private PhysicsMaterial2D _highFriction;
+
+    [SerializeField] private GameObject _foot;
+    
+    public string m_nextAttack;
+
+    public bool m_canAttack,m_isAttack,m_isJumpStart,m_isJump,m_isJumpEnd,m_isLand,isUsingSkill;
+
+    private float m_directX, m_directY, m_passDirectX, m_attackAnimationDuration, m_jumpAnimationDuration;
     private Rigidbody2D m_rg;
     private Vector2 m_velJump;
-    private bool m_isJump, m_isLand, m_isJumpStart, m_isJumpEnd, m_isAttack, m_isHit, m_isDeath, m_isHasKey, m_isMove;
+    private bool m_isHit, m_isDeath, m_isHasKey, m_isMove;
     private Animator m_anim;
-    private string m_passAnim, m_curAnim,m_paramAttack,m_paramHit;
+    private string m_passAnim, m_curAnim,m_paramHit;
+    private BoxCollider2D m_boxColl,m_boxCollFoot;
+    private RaycastHit2D m_raySlope;
+
+
     void Start()
     {
         Data.Reset();
@@ -28,41 +39,171 @@ public class PlayerController : MonoBehaviour
         m_velJump = new Vector2(0, Mathf.Sqrt(50));
         m_anim = GetComponent<Animator>();
         _healthBar.SetData(_maxHealth,Vector3.zero,true);
-        m_paramAttack = "isAttack";
         m_paramHit = "isHit";
-        if(m_rg) m_rg.constraints = RigidbodyConstraints2D.FreezeRotation;
+        m_canAttack = true;
+        m_passDirectX = 1;
+        m_nextAttack = TagConst.A_ATTACK_1;
         Physics2D.IgnoreLayerCollision(3,6,false);
+        //foot{
+        if (!_foot) _foot = transform.Find("Foot").gameObject;
+        m_boxColl = GetComponent<BoxCollider2D>();
+        m_boxCollFoot = _foot.GetComponent<BoxCollider2D>();
+        //foot}
     }
     
     void Update()
     {
-        if (m_isDeath) return;
+        if (m_isDeath || isUsingSkill) return;
+        
+        //Draw Ray{
+        CheckWallAhead();
+        //Draw Ray}
+        
         m_directX = Input.GetAxisRaw("Horizontal");
-        if (!m_isJumpStart && !m_isAttack)
+        if (!m_isJumpStart)
         {
-            OnMove();
+            if (!m_isAttack)
+            {
+                OnMove();
 
-            OnJump();
-            
-            OnAttack();
+                OnJump();
+            }
+            HandleAttack();
         }
+
+        HandleUseSkill();   
+    }
+    
+    private void LateUpdate()
+    {
         PlayAnim(m_curAnim);
     }
+
+    //UseSkill{
+    private void HandleUseSkill()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            m_isAttack = false;
+            m_isJumpStart = false;
+            isUsingSkill = true;
+        
+            m_rg.sharedMaterial = null;
+
+            m_rg.velocity = Vector2.zero;
+            
+            m_curAnim = "Skill1";
+            
+            Physics2D.IgnoreLayerCollision(3,6);
+        }
+    }
+
+    private void OnStartSkill()
+    {
+        ShowAfterImg();
+    }
+
+    private void ContinuesSkill()
+    {
+        if(!CheckWallAhead()) transform.Translate(Vector3.right * m_boxColl.size.x * 1.5f * m_passDirectX);
+        UpdatePosSlope();
+        ShowAfterImg();
+    }
+    
+    private void EndSkill()
+    {
+        ContinuesSkill();
+        
+        if(!CheckWallAhead()) transform.Translate(Vector3.right * m_boxColl.size.x * 1.5f * m_passDirectX);
+        UpdatePosSlope();
+        
+        isUsingSkill = false;
+        m_rg.sharedMaterial = _highFriction;
+        Physics2D.IgnoreLayerCollision(3,6,false);
+        
+    }
+    //UseSkill}
+
+    private RaycastHit2D GetRayCastGroundAbove()
+    {
+        Vector3 endPos = _foot.transform.position;
+        Vector3 startPos = new Vector3(endPos.x, transform.position.y, 0);
+        Debug.DrawLine(startPos,endPos,Color.red);
+        return Physics2D.Linecast(startPos, endPos, _layerGround);
+    }
+
+    private void UpdatePosSlope()
+    {
+
+        m_raySlope = GetRayCastGroundAbove();
+        if (m_raySlope.collider)
+        {
+            Vector3 posCur = transform.position;
+            float distanceBodyAndFoot = posCur.y - _foot.transform.position.y;
+            transform.position = new Vector3(posCur.x, m_raySlope.point.y + distanceBodyAndFoot, posCur.z);
+        }
+    }
+
+    private void ShowAfterImg()
+    {
+        AfterImagePool.Ins.GetFromPool();
+    }
+
+    //Attack{
+
+    private void HandleAttack()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            m_canAttack = true;
+            if (m_isAttack) return;
+            m_nextAttack = TagConst.A_ATTACK_1;
+            m_isAttack = true;
+            m_canAttack = false;
+            OnAttack();
+        }
+        
+        if (m_isAttack)
+        {
+            AnimatorStateInfo animationStateInfo = m_anim.GetCurrentAnimatorStateInfo(0);
+            
+            if (animationStateInfo.normalizedTime >= 1.0f)
+            {
+                if (animationStateInfo.IsName(TagConst.A_ATTACK_1) || animationStateInfo.IsName(TagConst.A_ATTACK_2))
+                {
+                    m_rg.sharedMaterial = _highFriction;
+                    m_isAttack = false;
+                }
+            }
+        }
+    }
+    
+    private void OnAttack()
+    {
+        m_rg.sharedMaterial = null;
+        m_rg.velocity = Vector2.right * 0.45f/ 0.3f * m_passDirectX;
+        m_curAnim = m_nextAttack;
+        m_nextAttack = m_nextAttack == TagConst.A_ATTACK_1 ? TagConst.A_ATTACK_2 : TagConst.A_ATTACK_1;
+    }
+
+    private void EndAttack()
+    {
+        if (m_canAttack)
+        {
+            if(!CheckWallAhead()) transform.Translate(Vector3.right * (_moveSpeed * Time.deltaTime * m_passDirectX));
+            UpdatePosSlope();
+            m_canAttack = false;
+            OnAttack();
+        }
+    }
+
+    //Attack}
 
     private void OnMove()
     {
         if (m_directX != 0)
         {
-            Vector3 startPos = _foot.position;
-            Vector3 endPos = startPos + Vector3.right * 0.6f * m_directX;
-
-            if (!Physics2D.Linecast(startPos, endPos, _layerWall).collider)
-            {
-                transform.Translate(Vector3.right * (_moveSpeed * Time.deltaTime * m_directX));
-            }
-            
-            Debug.DrawLine(startPos,endPos,Color.red);
-            
+            if(!CheckWallAhead()) transform.Translate(Vector3.right * (_moveSpeed * Time.deltaTime * m_directX));
             if (m_directX != m_passDirectX)
             {
                 m_passDirectX = m_directX;
@@ -73,9 +214,26 @@ public class PlayerController : MonoBehaviour
             {
                 m_isJumpEnd = false;
                 m_curAnim = TagConst.A_Run;
+                
             }
         }
     }
+
+    private bool CheckWallAhead()
+    {
+        float m_widthColFoot = m_boxCollFoot.size.x;
+        float offSetFootX = m_boxCollFoot.offset.x;
+        bool check = true;
+        Vector3 startPos = _foot.transform.position + Vector3.right *(m_widthColFoot/2 + offSetFootX) * m_passDirectX;
+        Vector3 endPos = startPos + Vector3.right * _lengthRayAhead * m_passDirectX;
+
+        if (!Physics2D.Linecast(startPos, endPos, _layerWall).collider) check = false;
+            
+        Debug.DrawLine(startPos,endPos,Color.red);
+        
+        return check;
+    }
+    
 
     private void OnJump()
     {
@@ -105,21 +263,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnAttack()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && !m_isJumpStart)
-        {
-            m_isAttack = true;
-            m_anim.SetTrigger(m_paramAttack);
-            if (m_rg.velocity.y != 0)
-            {
-                m_rg.velocity = Vector2.zero;
-                m_curAnim = TagConst.A_Fall;
-            }
-            PlayAudio(TagConst.AUDIO_HIT);
-        }
-    }
-
     public void PlayAnim(string anim)
     {
         if (m_passAnim != anim)
@@ -129,29 +272,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Jumped()
+    private void Jumped() 
     {
         m_rg.velocity = m_velJump;
+        m_rg.sharedMaterial = null;
         m_isJumpStart = false;
         PlayAudio(TagConst.AUDIO_JUMP1);
     }
     
-    private void EndAttack()
-    {
-        m_anim.ResetTrigger(m_paramAttack);
-        m_isAttack = false;
-    }
-
     private void OnCollisionEnter2D(Collision2D col)
     {
         GameObject gObj = col.gameObject;
         if (gObj.CompareTag(TagConst.GROUND))
         {
-            if (m_curAnim != TagConst.A_Fall) return;
-            m_isJump = false;
-            m_isJumpEnd = true;
-            m_curAnim = TagConst.A_Landing;
-            PlayAnim(m_curAnim);
             m_isLand = true;
         }
     }
@@ -159,13 +292,27 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionStay2D(Collision2D col)
     {
         GameObject gObj = col.gameObject;
-        if (gObj.CompareTag(TagConst.GROUND)) m_isLand = true;
+        if (gObj.CompareTag(TagConst.GROUND))
+        {
+            
+            if (!m_isJump || m_isJumpStart) return;
+            
+            if(m_rg.velocity.y == 0)
+            {
+                AudioManager.Ins.PlayAudio(TagConst.AUDIO_JUMP2,true);
+                m_isJump = false;
+                m_rg.sharedMaterial = _highFriction;
+            }
+        }
     }
 
     private void OnCollisionExit2D(Collision2D other)
     {
         GameObject gObj = other.gameObject;
-        if (gObj.CompareTag(TagConst.GROUND)) m_isLand = false;
+        if (gObj.CompareTag(TagConst.GROUND))
+        {
+            m_isLand = false;
+        }
     }
     
     private void OnTriggerEnter2D(Collider2D col)
@@ -203,12 +350,7 @@ public class PlayerController : MonoBehaviour
         m_anim.SetBool(m_paramHit,m_isHit);
         Physics2D.IgnoreLayerCollision(3,6,false);
     }
-    private void Landed()
-    {
-        PlayAudio(TagConst.AUDIO_JUMP2);
-        m_isJumpEnd = false;
-    }
-
+    
     public void ChangeHealth(float val)
     {
         _healthBar.ChangeHealth(val);
@@ -220,7 +362,6 @@ public class PlayerController : MonoBehaviour
     {
         PlayAudio(TagConst.AUDIO_DEATH);
         m_isDeath = true;
-        m_anim.ResetTrigger(m_paramAttack);
         m_anim.SetBool(m_paramHit,false);
         m_anim.SetTrigger(TagConst.ParamDeath);
         m_rg.constraints = RigidbodyConstraints2D.FreezeAll;

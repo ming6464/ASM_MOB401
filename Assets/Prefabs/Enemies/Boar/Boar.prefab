@@ -348,7 +348,8 @@ MonoBehaviour:
   _point: 15
   _damage: 25
   _highFriction: {fileID: 6200000, guid: f36cd1147eb90e349b4b89d58ad894bc, type: 2}
-  _lengthRay: 1.5
+  _lengthRayBelow: 1
+  _lengthRayAhead: 0.1
   _speedRunning: 3.6
   _speedWalking: 1.5
   _foot: {fileID: 5286322476525655925}

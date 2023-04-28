@@ -19,14 +19,17 @@ public static class TagConst{
     public const string DEATHZONE = "DeathZone";
     public const string FINISH = "Finish";
     public const string KEY = "Key";
+    public const string AUDIOMANAGER = "AudioManager";
+    public const string AFTERIMAGEPOOL = "AfterImagePool";
 
     public const string A_JUMP = "Jump",
         A_Run = "Run",
         A_Fall = "Fall",
-        A_Landing = "Landing",
         A_IDLE = "Idle",
         A_WALK = "Walk",
-        A_SPRINGY = "Springy";
+        A_SPRINGY = "Springy",
+        A_ATTACK_1 = "Attack_1",
+        A_ATTACK_2 = "Attack_2";
 
     public const string AUDIO_JUMP1 = "Jump1",
         AUDIO_JUMP2 = "Jump2",

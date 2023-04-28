@@ -12,6 +12,9 @@ TagManager:
   - PlayerSword
   - EnemyVisibleArea
   - Key
+  - AudioManager
+  - AfterImagePool
+  - GameManager
   layers:
   - Default
   - TransparentFX
@@ -49,6 +52,9 @@ TagManager:
   - name: Background
     uniqueID: 1249027111
     locked: 0
+  - name: Tilemap-CollisionWall
+    uniqueID: 1800084953
+    locked: 0
   - name: Tilemap-NoCollision5
     uniqueID: 852492489
     locked: 0
@@ -67,9 +73,6 @@ TagManager:
   - name: Tilemap-NoCollision0
     uniqueID: 3550079533
     locked: 0
-  - name: Tilemap-CollisionWall
-    uniqueID: 1800084953
-    locked: 0
   - name: Tilemap-Collision
     uniqueID: 472961777
     locked: 0
@@ -81,4 +84,7 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 961167093
+    locked: 0
+  - name: Player
+    uniqueID: 531146793
     locked: 0

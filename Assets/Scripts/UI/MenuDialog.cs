@@ -63,7 +63,7 @@ public class MenuDialog : MonoBehaviour
         if (_toggle.btnClose) _toggle.btnClose.onClick.AddListener(HandleClose);
         if (_toggle.btnNext) _toggle.btnNext.onClick.AddListener(HandleNext);
         if (_toggle.btnBack) _toggle.btnBack.onClick.AddListener(HandleBack);
-        if (_toggle.btnBack) _toggle.btnRestart.onClick.AddListener(HandleRestart);
+        if (_toggle.btnRestart) _toggle.btnRestart.onClick.AddListener(HandleRestart);
         if (_toggle.btnInfo) _toggle.btnInfo.onClick.AddListener(HandleShowInfo);
         if (_toggle.btnEnemyKilled) _toggle.btnEnemyKilled.onClick.AddListener(HandleShowEnemyKilled);
         if (_toggle.btnAudio) _toggle.btnAudio.onClick.AddListener(handleShowAudioManager);
