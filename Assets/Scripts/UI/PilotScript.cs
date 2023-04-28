@@ -16,8 +16,8 @@ public class PilotScript : MonoBehaviour
     private bool m_isShow;
     void Start()
     {
-        _btnClose.onClick.AddListener(HandleClose);
-        _btnShow.onClick.AddListener(HandleShow);
+        _btnClose?.onClick.AddListener(HandleClose);
+        _btnShow?.onClick.AddListener(HandleShow);
         if (!Data.isPlayedPilot)
         {
             Data.isPlayedPilot = true;

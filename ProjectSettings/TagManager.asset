@@ -15,6 +15,9 @@ TagManager:
   - AudioManager
   - AfterImagePool
   - GameManager
+  - HealthBarPlayer
+  - Undefined
+  - MenuDialog
   layers:
   - Default
   - TransparentFX

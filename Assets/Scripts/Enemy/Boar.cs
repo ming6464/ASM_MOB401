@@ -22,12 +22,18 @@ public class Boar : Enemy
     protected override void Start()
     {
         base.Start();
+        
         m_direction = 1;
         widthCol = Mathf.Abs(GetComponent<BoxCollider2D>().size.x * transform.localScale.x);
-        UpdateDir();
+        
+        //High Friction{
+        if(!_highFriction) _highFriction = Resources.Load<PhysicsMaterial2D>(TagConst.URL_MATERIALS + "HighFriction");
         m_rg.sharedMaterial = _highFriction;
+        //High Friction}
 
         if (!_foot) _foot = transform.Find("Foot");
+        
+        UpdateDir();
     }
     
 

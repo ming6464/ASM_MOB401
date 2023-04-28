@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,12 @@ public class CamController : MonoBehaviour
     private Transform _player;
     [SerializeField]
     private float _offsetY,_minX,_maxY,_minY,_maxX;
-    
+
+    private void Start()
+    {
+        if (!_player) _player = GameObject.FindObjectOfType<PlayerController>()?.transform;
+    }
+
     void LateUpdate()
     {
         if (!_player) return;

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class GameManager : Singleton<GameManager>
 {
     public bool isOverGame;
-    public Color low, high;
+    public Color colorLowHealth = Color.red, colorHighHealth = Color.green;
 
     [SerializeField] private MenuDialog _menuDialog;
 
@@ -20,25 +20,32 @@ public class GameManager : Singleton<GameManager>
     {
         if (!GameObject.FindGameObjectWithTag(TagConst.AUDIOMANAGER))
         {
-            if(_audioManager) Instantiate(_audioManager);
+            if (!_audioManager) _audioManager = Resources.Load<AudioManager>(TagConst.URL_PREFABS + "AudioManager");
+            Instantiate(_audioManager);
         }
 
         if (!GameObject.FindGameObjectWithTag(TagConst.AFTERIMAGEPOOL))
         {
-            if (_afteImagePool) Instantiate(_afteImagePool);
+            if (SceneManager.GetActiveScene().name == "Start") return;
+            if (!_afteImagePool) _audioManager = Resources.Load<AudioManager>(TagConst.URL_PREFABS + "AfterImagePool");
+            Instantiate(_afteImagePool);
         }
+
+        if (!_menuDialog)
+            _menuDialog = GameObject.FindGameObjectWithTag(TagConst.MENUDIALOG)?.GetComponent<MenuDialog>();
     }
 
     public override void Start()
     {
-        
+        if (colorLowHealth.a == 0) colorLowHealth.a = 255;
+        if (colorHighHealth.a == 0) colorHighHealth.a = 255;
     }
 
     public override void Update()
     {
         if (isOverGame) return;
         base.Update();
-        if (Input.GetKeyDown(KeyCode.Escape) && _menuDialog)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             _menuDialog.ShowDialog();
         }

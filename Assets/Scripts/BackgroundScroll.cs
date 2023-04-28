@@ -14,11 +14,13 @@ public class BackgroundScroll : MonoBehaviour
     }
     [SerializeField] private EffectParallax[] _effectParallaxes;
     [SerializeField] private Transform _player;
+    [SerializeField] private bool _isStartMap;
     private float m_passX, m_dx;
     private Material[] m_mat;
     private int BgCount;
     void Start()
     {
+        if (!_player) _player = GameObject.FindGameObjectWithTag(TagConst.PLAYER)?.transform;
         m_passX = transform.position.x;
         if (_effectParallaxes != null)
         {
@@ -33,7 +35,15 @@ public class BackgroundScroll : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!_player) return;
+        if (_isStartMap)
+        {
+            for (int i = 0; i < BgCount; i++)
+            {
+                m_mat[i].mainTextureOffset += Time.deltaTime * _effectParallaxes[i].speed * Vector2.right;
+            }
+
+            return;
+        }
         m_dx = 0;
         m_passX -= _player.position.x;
         if (m_passX < 0) m_dx = 1;

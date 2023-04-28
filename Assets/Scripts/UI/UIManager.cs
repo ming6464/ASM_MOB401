@@ -21,12 +21,12 @@ public class UIManager : Singleton<UIManager>
 
     public void UpdateScore(int val)
     {
-        _scoreText.text = val.ToString();
+        if(_scoreText) _scoreText.text = val.ToString();
     }
 
     public void ShowKey()
     {
-        _keyImg.gameObject.SetActive(true);
+        if(_keyImg) _keyImg.gameObject.SetActive(true);
     }
     
 }

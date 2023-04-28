@@ -40,7 +40,7 @@ public class HealthBar :MonoBehaviour
         CurHeath = maxHealth;
         m_isPlayer = isPlayer;
         _sliderHealth.fillRect.GetComponentInChildren<Image>().color =
-            Color.Lerp(GameManager.Ins.low, GameManager.Ins.high, _sliderHealth.normalizedValue);
+            Color.Lerp(GameManager.Ins.colorLowHealth, GameManager.Ins.colorHighHealth, _sliderHealth.normalizedValue);
         m_isSetData = true;
         if(!isPlayer) HideSliderHealth();
     }
@@ -49,7 +49,7 @@ public class HealthBar :MonoBehaviour
     {
         CurHeath += val;
         _sliderHealth.fillRect.GetComponentInChildren<Image>().color =
-            Color.Lerp(GameManager.Ins.low, GameManager.Ins.high, _sliderHealth.normalizedValue);
+            Color.Lerp(GameManager.Ins.colorLowHealth, GameManager.Ins.colorHighHealth, _sliderHealth.normalizedValue);
         HideSliderHealth(false);
     }
 

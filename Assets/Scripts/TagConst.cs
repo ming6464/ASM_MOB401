@@ -16,11 +16,16 @@ public static class TagConst{
     public const string CAM = "MainCamera";
     public const string ENEMY = "Enemy";
     public const string ParamDeath = "isDeath";
+    public const string ParamImmortal = "isImmortal";
+    public const string ParamHit = "isHit";
     public const string DEATHZONE = "DeathZone";
     public const string FINISH = "Finish";
     public const string KEY = "Key";
     public const string AUDIOMANAGER = "AudioManager";
     public const string AFTERIMAGEPOOL = "AfterImagePool";
+    public const string HEALTHBAR = "HealthBarPlayer";
+    public const string MENUDIALOG = "MenuDialog";
+    public const string MAINCAMERA = "MainCamera";
 
     public const string A_JUMP = "Jump",
         A_Run = "Run",
@@ -39,4 +44,6 @@ public static class TagConst{
         AUDIO_WIN = "Win",
         AUDIO_HIT = "Hit",
         AUDIO_DEATH = "Death";
+
+    public const string URL_MATERIALS = "Materials/HighFriction",URL_PREFABS = "Prefabs/";
 }

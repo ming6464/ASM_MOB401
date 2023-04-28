@@ -197,7 +197,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60ecc0a8560978f41b17768e22b4e320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yVeloc: 0
   _healthBar: {fileID: 0}
   _moveSpeed: 4
   _maxHealth: 150
@@ -210,7 +209,8 @@ MonoBehaviour:
     m_Bits: 2048
   _highFriction: {fileID: 6200000, guid: f36cd1147eb90e349b4b89d58ad894bc, type: 2}
   _foot: {fileID: 2321468491402642247}
-  m_nextAttack: 
+  _immortalColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _normalColor: {r: 1, g: 1, b: 1, a: 1}
   m_canAttack: 0
   m_isAttack: 0
   m_isJumpStart: 0

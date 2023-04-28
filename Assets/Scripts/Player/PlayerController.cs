@@ -10,15 +10,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private HealthBar _healthBar;
     [SerializeField]
-    private float _moveSpeed,_maxHealth = 100,_lengthRayAhead = 0.2f;
+    private float _moveSpeed = 4,_maxHealth = 150,_lengthRayAhead = 0.2f;
 
     [SerializeField] private LayerMask _layerWall,_layerGround;
     
     [SerializeField] private PhysicsMaterial2D _highFriction;
 
     [SerializeField] private GameObject _foot;
-    
-    public string m_nextAttack;
 
     public bool m_canAttack,m_isAttack,m_isJumpStart,m_isJump,m_isJumpEnd,m_isLand,isUsingSkill;
 
@@ -27,7 +25,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 m_velJump;
     private bool m_isHit, m_isDeath, m_isHasKey, m_isMove;
     private Animator m_anim;
-    private string m_passAnim, m_curAnim,m_paramHit;
+    private string m_passAnim, m_curAnim,m_nextAttack;
     private BoxCollider2D m_boxColl,m_boxCollFoot;
     private RaycastHit2D m_raySlope;
 
@@ -38,12 +36,19 @@ public class PlayerController : MonoBehaviour
         m_rg = GetComponent<Rigidbody2D>();
         m_velJump = new Vector2(0, Mathf.Sqrt(50));
         m_anim = GetComponent<Animator>();
-        _healthBar.SetData(_maxHealth,Vector3.zero,true);
-        m_paramHit = "isHit";
-        m_canAttack = true;
         m_passDirectX = 1;
-        m_nextAttack = TagConst.A_ATTACK_1;
         Physics2D.IgnoreLayerCollision(3,6,false);
+        
+        //HealthBar{
+        if (!_healthBar) _healthBar = GameObject.FindGameObjectWithTag(TagConst.HEALTHBAR).GetComponent<HealthBar>();
+        _healthBar.SetData(_maxHealth,Vector3.zero,true);
+        //HealthBar}
+        
+        //High Friction{
+        if(!_highFriction) _highFriction = Resources.Load<PhysicsMaterial2D>(TagConst.URL_MATERIALS + "HighFriction");
+        m_rg.sharedMaterial = _highFriction;
+        //High Friction}
+        
         //foot{
         if (!_foot) _foot = transform.Find("Foot").gameObject;
         m_boxColl = GetComponent<BoxCollider2D>();
@@ -93,8 +98,8 @@ public class PlayerController : MonoBehaviour
             m_rg.velocity = Vector2.zero;
             
             m_curAnim = "Skill1";
-            
-            Physics2D.IgnoreLayerCollision(3,6);
+
+            Immortalize();
         }
     }
 
@@ -119,8 +124,26 @@ public class PlayerController : MonoBehaviour
         
         isUsingSkill = false;
         m_rg.sharedMaterial = _highFriction;
+        StartCoroutine(RemoveImmortalityAfterDelay(1.5f));
+
+    }
+    
+    IEnumerator RemoveImmortalityAfterDelay(float time)
+    {
+        yield return new WaitForSeconds(time);
+        RemoveImmortality();
+    }
+
+    private void Immortalize()
+    {
+        m_anim.SetBool(TagConst.ParamImmortal,true);
+        Physics2D.IgnoreLayerCollision(3,6);
+    }
+
+    private void RemoveImmortality()
+    {
+        m_anim.SetBool(TagConst.ParamImmortal,false);
         Physics2D.IgnoreLayerCollision(3,6,false);
-        
     }
     //UseSkill}
 
@@ -337,7 +360,7 @@ public class PlayerController : MonoBehaviour
     {
         if (m_isHit) return;
         m_isHit = true;
-        m_anim.SetBool(m_paramHit,m_isHit);
+        m_anim.SetBool(TagConst.ParamHit,m_isHit);
         Physics2D.IgnoreLayerCollision(3,6);
         StartCoroutine(CountDownResetHit());
         ChangeHealth(damage * -1);
@@ -347,7 +370,7 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
         m_isHit = false;
-        m_anim.SetBool(m_paramHit,m_isHit);
+        m_anim.SetBool(TagConst.ParamHit,m_isHit);
         Physics2D.IgnoreLayerCollision(3,6,false);
     }
     
@@ -362,7 +385,7 @@ public class PlayerController : MonoBehaviour
     {
         PlayAudio(TagConst.AUDIO_DEATH);
         m_isDeath = true;
-        m_anim.SetBool(m_paramHit,false);
+        m_anim.SetBool(TagConst.ParamHit,false);
         m_anim.SetTrigger(TagConst.ParamDeath);
         m_rg.constraints = RigidbodyConstraints2D.FreezeAll;
     }
