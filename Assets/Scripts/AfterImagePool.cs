@@ -12,6 +12,7 @@ public class AfterImagePool : Singleton<AfterImagePool>
     public override void Awake()
     {
         DontLoad(true);
+        if(!_afterImg) _afterImg = Resources.Load<PlayerAfterImageSprite>(TagConst.URL_PREFABS + "PlayerAfterSprite").gameObject;
         BuffPool();
     }
     

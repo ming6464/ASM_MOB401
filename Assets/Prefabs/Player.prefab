@@ -87,7 +87,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad64ec2d2b03abb418271bc28b56c96a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 45
+  _damage: 15
+  _damegaSkill: 35
 --- !u!1 &89223484760061481
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,7 +165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad64ec2d2b03abb418271bc28b56c96a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 45
+  _damage: 15
+  _damegaSkill: 35
 --- !u!1 &2321468491402642247
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,15 +287,18 @@ MonoBehaviour:
   _layerGround:
     serializedVersion: 2
     m_Bits: 2048
-  _highFriction: {fileID: 6200000, guid: f36cd1147eb90e349b4b89d58ad894bc, type: 2}
+  _highFriction: {fileID: 0}
   _foot: {fileID: 2321468491402642247}
+  _bladePlayer: {fileID: 0}
+  _skillManager: {fileID: 0}
   m_canAttack: 0
   m_isAttack: 0
   m_isJumpStart: 0
   m_isJump: 0
-  m_isJumpEnd: 0
   m_isLand: 0
   isUsingSkill: 0
+  isActiveSkillG: 0
+  isActiveSkillF: 0
 --- !u!212 &2321468492705199673
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -501,4 +506,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad64ec2d2b03abb418271bc28b56c96a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 45
+  _damage: 15
+  _damegaSkill: 35

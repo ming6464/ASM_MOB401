@@ -32,7 +32,7 @@ public class GameManager : Singleton<GameManager>
         }
 
         if (!_menuDialog)
-            _menuDialog = GameObject.FindGameObjectWithTag(TagConst.MENUDIALOG)?.GetComponent<MenuDialog>();
+            _menuDialog = FindObjectOfType<MenuDialog>();
     }
 
     public override void Start()

@@ -4,28 +4,26 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
-    [SerializeField] private GameObject _key;
+    
+    [SerializeField]
+    protected HealthBar _healthBar;
     [SerializeField] protected bool _isBoss;
+    [SerializeField] private GameObject _key;
+    [SerializeField] private Vector3 _healthBarOffSet;
+    [SerializeField] private float _maxHealth = 100;
+    [SerializeField] private string _name;
+    [SerializeField] private int _point,_damage;
+    
     protected Animator m_anim;
     protected Rigidbody2D m_rg;
     protected bool isDeath, m_isHit, m_isSeePlayer;
     private PlayerController m_player;
     protected string m_animPass, m_animCur;
 
-    [SerializeField]
-    protected HealthBar _healthBar;
-    [SerializeField]
-    private Vector3 _healthBarOffSet;
-    [SerializeField] private float _maxHealth = 100;
-    [SerializeField] private string _name;
-    [SerializeField] private int _point,_damage;
-    
-
     protected virtual void Start()
     {
         m_anim = GetComponent<Animator>();
         m_rg = GetComponent<Rigidbody2D>();
-        ActiveAnimator(false);
         m_player = GameObject.FindWithTag(TagConst.PLAYER).GetComponent<PlayerController>();
         _healthBar.SetData(_maxHealth,_healthBarOffSet);
     }
@@ -58,22 +56,18 @@ public abstract class Enemy : MonoBehaviour
     private void Death()
     {
         Data.UpdateData(_name,_point);
-        if (_isBoss && _key)
+        if (_isBoss)
         {
+            if (!_key) _key = Resources.Load<GameObject>(TagConst.URL_PREFABS + "Key");
             GameObject newKey = Instantiate(_key, transform.position, quaternion.identity);
             newKey.GetComponent<Rigidbody2D>().velocity = new Vector2(2 * FindDirPlayer(), 2);
         }
         AudioManager.Ins.PlayAudio(TagConst.AUDIO_KILL,true);
         Destroy(this.gameObject);
     }
-    public void ActiveAnimator(bool isActive)
-    {
-        m_anim.enabled = isActive;
-    }
     private void OnTriggerEnter2D(Collider2D col)
     {
         GameObject gObj = col.gameObject;
-        if (!GameManager.Ins.isOverGame && gObj.CompareTag(TagConst.CAM) && !m_anim.enabled) ActiveAnimator(true);
         if (gObj.CompareTag(TagConst.PLAYER) && m_player)
         {
             m_player.OnHit(_damage);

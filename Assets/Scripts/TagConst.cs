@@ -53,5 +53,5 @@ public static class TagConst{
         AUDIO_HIT = "Hit",
         AUDIO_DEATH = "Death";
 
-    public const string URL_MATERIALS = "Materials/HighFriction",URL_PREFABS = "Prefabs/";
+    public const string URL_MATERIALS = "Materials/",URL_PREFABS = "Prefabs/";
 }

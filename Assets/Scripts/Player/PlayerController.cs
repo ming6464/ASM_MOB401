@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private BladePlayer _bladePlayer;
 
-    [SerializeField] private SkillScript _f, _g;
+    [SerializeField] private SkillManager _skillManager;
 
     public bool m_canAttack,m_isAttack,m_isJumpStart,m_isJump,m_isLand,isUsingSkill,isActiveSkillG,isActiveSkillF;
 
@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
         Physics2D.IgnoreLayerCollision(3,6,false);
         
         //HealthBar{
-        if (!_healthBar) _healthBar = GameObject.FindGameObjectWithTag(TagConst.HEALTHBAR).GetComponent<HealthBar>();
+        if (!_healthBar) _healthBar = FindObjectOfType<HealthBar>();
         _healthBar.SetData(_maxHealth,Vector3.zero,true);
         //HealthBar}
         
@@ -58,6 +58,10 @@ public class PlayerController : MonoBehaviour
         m_boxColl = GetComponent<BoxCollider2D>();
         m_boxCollFoot = _foot.GetComponent<BoxCollider2D>();
         //foot}
+        if (!_skillManager) _skillManager = FindObjectOfType<SkillManager>();
+        
+        //Blade
+        if (!_bladePlayer) _bladePlayer = Resources.Load<BladePlayer>(TagConst.URL_PREFABS + "BladePlayer");
     }
     
     void Update()
@@ -101,7 +105,7 @@ public class PlayerController : MonoBehaviour
             
             m_curAnim = TagConst.A_SKILLF;
             
-            _f.UseSkill();
+            _skillManager.UseSkill(TagConst.Skill.F);
             
             Immortalize();
         }
@@ -172,13 +176,13 @@ public class PlayerController : MonoBehaviour
 
             m_rg.velocity = Vector2.zero;
             
-            _g.UseSkill();
+            _skillManager.UseSkill(TagConst.Skill.G);
         }
     }
     
+    
     private void RunAndShowBlade()
     {
-        if (!_bladePlayer) _bladePlayer = Resources.Load<BladePlayer>(TagConst.URL_PREFABS + "BladePlayer");
         BladePlayer newBlade = Instantiate(_bladePlayer, transform.position, Quaternion.identity);
         newBlade.Run(m_passDirectX);
     }
@@ -213,16 +217,6 @@ public class PlayerController : MonoBehaviour
 
     private void HandleAttack()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            m_canAttack = true;
-            if (m_isAttack) return;
-            m_nextAttack = TagConst.A_ATTACK_1;
-            m_isAttack = true;
-            m_canAttack = false;
-            OnAttack();
-        }
-        
         if (m_isAttack)
         {
             AnimatorStateInfo animationStateInfo = m_anim.GetCurrentAnimatorStateInfo(0);
@@ -236,6 +230,17 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            m_canAttack = true;
+            if (m_isAttack) return;
+            m_nextAttack = TagConst.A_ATTACK_1;
+            m_isAttack = true;
+            m_canAttack = false;
+            OnAttack();
+        }
+        
     }
     
     private void OnAttack()

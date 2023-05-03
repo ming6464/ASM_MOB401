@@ -39,7 +39,7 @@ public class Boar : Enemy
 
     protected override void Update()
     {
-        if (!this.m_anim.enabled || m_isHit || isDeath) return;
+        if (m_isHit || isDeath) return;
 
         float speed = 0;
         
@@ -86,7 +86,7 @@ public class Boar : Enemy
                 if (hits.Length > 0)
                 {
                     if (!hits[0].collider.CompareTag(TagConst.DEATHZONE)) return true;
-                }else if (this.m_isSeePlayer) return true;
+                }else if (this.m_isSeePlayer && !_isBoss) return true;
             }
             ChangeDir();
             return false;
