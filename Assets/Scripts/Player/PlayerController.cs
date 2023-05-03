@@ -18,7 +18,11 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private GameObject _foot;
 
-    public bool m_canAttack,m_isAttack,m_isJumpStart,m_isJump,m_isJumpEnd,m_isLand,isUsingSkill;
+    [SerializeField] private BladePlayer _bladePlayer;
+
+    [SerializeField] private SkillScript _f, _g;
+
+    public bool m_canAttack,m_isAttack,m_isJumpStart,m_isJump,m_isLand,isUsingSkill,isActiveSkillG,isActiveSkillF;
 
     private float m_directX, m_directY, m_passDirectX, m_attackAnimationDuration, m_jumpAnimationDuration;
     private Rigidbody2D m_rg;
@@ -59,9 +63,10 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (m_isDeath || isUsingSkill) return;
-        
+
         //Draw Ray{
         CheckWallAhead();
+        UpdatePosSlope();
         //Draw Ray}
         
         m_directX = Input.GetAxisRaw("Horizontal");
@@ -76,29 +81,28 @@ public class PlayerController : MonoBehaviour
             HandleAttack();
         }
 
-        HandleUseSkill();   
-    }
-    
-    private void LateUpdate()
-    {
+        HandleUseSkillF();
+        HandleUseSkillG();
+        
         PlayAnim(m_curAnim);
     }
 
-    //UseSkill{
-    private void HandleUseSkill()
+    //UseSkillF{
+    private void HandleUseSkillF()
     {
+        if (!isActiveSkillF || isUsingSkill) return;
         if (Input.GetKeyDown(KeyCode.F))
         {
-            m_isAttack = false;
-            m_isJumpStart = false;
             isUsingSkill = true;
         
             m_rg.sharedMaterial = null;
 
             m_rg.velocity = Vector2.zero;
             
-            m_curAnim = "Skill1";
-
+            m_curAnim = TagConst.A_SKILLF;
+            
+            _f.UseSkill();
+            
             Immortalize();
         }
     }
@@ -117,15 +121,20 @@ public class PlayerController : MonoBehaviour
     
     private void EndSkill()
     {
-        ContinuesSkill();
-        
-        if(!CheckWallAhead()) transform.Translate(Vector3.right * m_boxColl.size.x * 1.5f * m_passDirectX);
-        UpdatePosSlope();
-        
-        isUsingSkill = false;
-        m_rg.sharedMaterial = _highFriction;
-        StartCoroutine(RemoveImmortalityAfterDelay(1.5f));
+        if (m_curAnim is TagConst.A_SKILLF)
+        {
+            ContinuesSkill();
+            if(!CheckWallAhead()) transform.Translate(Vector3.right * m_boxColl.size.x * 1.5f * m_passDirectX);
+            UpdatePosSlope();
+            StartCoroutine(RemoveImmortalityAfterDelay(1.5f));
+        }
+        else RunAndShowBlade();
 
+        m_rg.sharedMaterial = _highFriction;
+        isUsingSkill = false;
+        m_isAttack = false;
+        m_isJumpStart = false;
+        m_isJump = false;
     }
     
     IEnumerator RemoveImmortalityAfterDelay(float time)
@@ -145,12 +154,40 @@ public class PlayerController : MonoBehaviour
         m_anim.SetBool(TagConst.ParamImmortal,false);
         Physics2D.IgnoreLayerCollision(3,6,false);
     }
-    //UseSkill}
+    //UseSkillF}
+    
+    
+    //UseSkillG{
+
+    private void HandleUseSkillG()
+    {
+        if (!isActiveSkillG  || isUsingSkill) return;
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            isUsingSkill = true;
+            
+            m_curAnim = TagConst.A_SKILLG;
+            
+            m_rg.sharedMaterial = null;
+
+            m_rg.velocity = Vector2.zero;
+            
+            _g.UseSkill();
+        }
+    }
+    
+    private void RunAndShowBlade()
+    {
+        if (!_bladePlayer) _bladePlayer = Resources.Load<BladePlayer>(TagConst.URL_PREFABS + "BladePlayer");
+        BladePlayer newBlade = Instantiate(_bladePlayer, transform.position, Quaternion.identity);
+        newBlade.Run(m_passDirectX);
+    }
+    //UseShillG}
 
     private RaycastHit2D GetRayCastGroundAbove()
     {
         Vector3 endPos = _foot.transform.position;
-        Vector3 startPos = new Vector3(endPos.x, transform.position.y, 0);
+        Vector3 startPos = isUsingSkill ? new Vector3(endPos.x, transform.position.y, 0) : endPos + Vector3.up * 0.2f;
         Debug.DrawLine(startPos,endPos,Color.red);
         return Physics2D.Linecast(startPos, endPos, _layerGround);
     }
@@ -192,7 +229,7 @@ public class PlayerController : MonoBehaviour
             
             if (animationStateInfo.normalizedTime >= 1.0f)
             {
-                if (animationStateInfo.IsName(TagConst.A_ATTACK_1) || animationStateInfo.IsName(TagConst.A_ATTACK_2))
+                if (m_curAnim is TagConst.A_ATTACK_1 or TagConst.A_ATTACK_2 or TagConst.A_ATTACK_3)
                 {
                     m_rg.sharedMaterial = _highFriction;
                     m_isAttack = false;
@@ -202,11 +239,12 @@ public class PlayerController : MonoBehaviour
     }
     
     private void OnAttack()
-    {
+    { 
         m_rg.sharedMaterial = null;
         m_rg.velocity = Vector2.right * 0.45f/ 0.3f * m_passDirectX;
         m_curAnim = m_nextAttack;
-        m_nextAttack = m_nextAttack == TagConst.A_ATTACK_1 ? TagConst.A_ATTACK_2 : TagConst.A_ATTACK_1;
+        m_nextAttack = m_nextAttack == TagConst.A_ATTACK_1 ? TagConst.A_ATTACK_2 :
+            m_nextAttack == TagConst.A_ATTACK_2 ? TagConst.A_ATTACK_3 : TagConst.A_ATTACK_1;
     }
 
     private void EndAttack()
@@ -235,9 +273,7 @@ public class PlayerController : MonoBehaviour
 
             if (!m_isJump && m_isLand)
             {
-                m_isJumpEnd = false;
                 m_curAnim = TagConst.A_Run;
-                
             }
         }
     }
@@ -260,28 +296,25 @@ public class PlayerController : MonoBehaviour
 
     private void OnJump()
     {
-        if (!m_isJumpEnd)
+        if (m_isLand && !m_isJump)
         {
-            if (m_isLand && !m_isJump)
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-                {
-                    m_isJumpStart = true;
-                    m_curAnim = TagConst.A_SPRINGY;
-                    m_isJump = true;
-                    m_isLand = false;
-                }else if(m_directX == 0) m_curAnim = TagConst.A_IDLE;
-            }
-            else if (!m_isLand)
+                m_isJumpStart = true;
+                m_curAnim = TagConst.A_SPRINGY;
+                m_isJump = true;
+                m_isLand = false;
+            }else if(m_directX == 0) m_curAnim = TagConst.A_IDLE;
+        }
+        else if (!m_isLand)
+        {
+            if (m_rg.velocity.y < 0)
             {
-                if (m_rg.velocity.y < 0)
-                {
-                    m_curAnim = TagConst.A_Fall;
-                    m_isLand = false;
-                }else if (m_rg.velocity.y > 0)
-                {
-                    m_curAnim = TagConst.A_JUMP;
-                }
+                m_curAnim = TagConst.A_Fall;
+                m_isLand = false;
+            }else if (m_rg.velocity.y > 0)
+            {
+                m_curAnim = TagConst.A_JUMP;
             }
         }
     }
@@ -398,5 +431,18 @@ public class PlayerController : MonoBehaviour
     private void PlayAudio(string name)
     {
         AudioManager.Ins.PlayAudio(name,true);
+    }
+
+    public void ActiveSkill(TagConst.Skill skill,bool isActive = true)
+    {
+        switch (skill)
+        {
+            case TagConst.Skill.F:
+                isActiveSkillF = isActive;
+                break;
+            case TagConst.Skill.G:
+                isActiveSkillG = isActive;
+                break;
+        }
     }
 }

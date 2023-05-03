@@ -8,7 +8,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected bool _isBoss;
     protected Animator m_anim;
     protected Rigidbody2D m_rg;
-    protected bool isDeath, m_isHit, m_isSeePlayer,m_isPlayerAttack;
+    protected bool isDeath, m_isHit, m_isSeePlayer;
     private PlayerController m_player;
     protected string m_animPass, m_animCur;
 
@@ -57,11 +57,7 @@ public abstract class Enemy : MonoBehaviour
 
     private void Death()
     {
-        if (m_isPlayerAttack)
-        {
-            Data.UpdateData(_name,_point);
-        }
-
+        Data.UpdateData(_name,_point);
         if (_isBoss && _key)
         {
             GameObject newKey = Instantiate(_key, transform.position, quaternion.identity);
@@ -82,17 +78,13 @@ public abstract class Enemy : MonoBehaviour
         {
             m_player.OnHit(_damage);
         }
-        if (gObj.CompareTag(TagConst.DEATHZONE))
-        {
-            m_isPlayerAttack = false;
-            Death();
-        }
+        if (gObj.CompareTag(TagConst.DEATHZONE)) Death();
     }
 
     private void SeePlayer(bool isSee)
     {
         m_isSeePlayer = isSee;
     }
-    public abstract void OnHit(int damage);
+    public abstract void OnHit(float damage);
 
 }

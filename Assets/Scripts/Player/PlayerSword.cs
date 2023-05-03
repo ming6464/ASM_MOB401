@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerSword : MonoBehaviour
 {
     [SerializeField]
-    private int _damage;
+    private int _damage = 35;
 
     private void OnTriggerEnter2D(Collider2D col)
     {

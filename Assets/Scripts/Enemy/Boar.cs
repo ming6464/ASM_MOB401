@@ -105,7 +105,7 @@ public class Boar : Enemy
         StartCoroutine(Idled());
     }
     
-    public override void OnHit(int damage)
+    public override void OnHit(float damage)
     {
         if (_healthBar)
         {
@@ -119,7 +119,6 @@ public class Boar : Enemy
         }
 
         if (_isBoss) return;
-        this.m_isPlayerAttack = true;
         m_rg.velocity = GetVelocityHit();
         m_rg.sharedMaterial = null;
         m_isHit = true;

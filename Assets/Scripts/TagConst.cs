@@ -1,6 +1,11 @@
 using System;
 
 public static class TagConst{
+    
+    public enum Skill
+    {
+        F,G
+    }
     public struct NameEnemy
     {
         public const string BOAR = "boar", SNAIL = "snail",BEE = "bee";
@@ -34,7 +39,10 @@ public static class TagConst{
         A_WALK = "Walk",
         A_SPRINGY = "Springy",
         A_ATTACK_1 = "Attack_1",
-        A_ATTACK_2 = "Attack_2";
+        A_ATTACK_2 = "Attack_2",
+        A_ATTACK_3 = "Attack_3",
+        A_SKILLF = "SkillF",
+        A_SKILLG = "SkillG";
 
     public const string AUDIO_JUMP1 = "Jump1",
         AUDIO_JUMP2 = "Jump2",
