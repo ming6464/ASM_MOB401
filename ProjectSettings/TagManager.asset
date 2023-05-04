@@ -18,6 +18,7 @@ TagManager:
   - HealthBarPlayer
   - Undefined
   - MenuDialog
+  - TutorialUI
   layers:
   - Default
   - TransparentFX
@@ -85,9 +86,9 @@ TagManager:
   - name: Tilemap-NoCollisionUI
     uniqueID: 3502391997
     locked: 0
-  - name: UI
-    uniqueID: 961167093
-    locked: 0
   - name: Player
     uniqueID: 531146793
+    locked: 0
+  - name: UI
+    uniqueID: 961167093
     locked: 0

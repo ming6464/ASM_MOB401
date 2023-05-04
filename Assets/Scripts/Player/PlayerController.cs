@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
-        if (m_isDeath || isUsingSkill) return;
+        if (GameManager.Ins.isShowTutorial || m_isDeath || isUsingSkill) return;
 
         //Draw Ray{
         CheckWallAhead();
@@ -114,6 +114,7 @@ public class PlayerController : MonoBehaviour
     private void OnStartSkill()
     {
         ShowAfterImg();
+        PlayAudio(TagConst.AUDIO_ATTACK);
     }
 
     private void ContinuesSkill()
@@ -121,6 +122,7 @@ public class PlayerController : MonoBehaviour
         if(!CheckWallAhead()) transform.Translate(Vector3.right * m_boxColl.size.x * 1.5f * m_passDirectX);
         UpdatePosSlope();
         ShowAfterImg();
+        PlayAudio(TagConst.AUDIO_SKILLF);
     }
     
     private void EndSkill()
@@ -185,6 +187,7 @@ public class PlayerController : MonoBehaviour
     {
         BladePlayer newBlade = Instantiate(_bladePlayer, transform.position, Quaternion.identity);
         newBlade.Run(m_passDirectX);
+        PlayAudio(TagConst.AUDIO_SKILLG);
     }
     //UseShillG}
 
@@ -250,6 +253,7 @@ public class PlayerController : MonoBehaviour
         m_curAnim = m_nextAttack;
         m_nextAttack = m_nextAttack == TagConst.A_ATTACK_1 ? TagConst.A_ATTACK_2 :
             m_nextAttack == TagConst.A_ATTACK_2 ? TagConst.A_ATTACK_3 : TagConst.A_ATTACK_1;
+        PlayAudio(TagConst.AUDIO_ATTACK);
     }
 
     private void EndAttack()
@@ -360,7 +364,6 @@ public class PlayerController : MonoBehaviour
             
             if(m_rg.velocity.y == 0)
             {
-                AudioManager.Ins.PlayAudio(TagConst.AUDIO_JUMP2,true);
                 m_isJump = false;
                 m_rg.sharedMaterial = _highFriction;
             }

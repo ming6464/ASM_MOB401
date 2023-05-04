@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
-    public bool isOverGame;
+    public bool isOverGame, isShowTutorial,isShowDialog;
     public Color colorLowHealth = Color.red, colorHighHealth = Color.green;
 
     [SerializeField] private MenuDialog _menuDialog;
@@ -16,6 +16,8 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField] private AfterImagePool _afteImagePool;
 
+    [SerializeField] private GameObject _tutorialUI;
+
     public override void Awake()
     {
         if (!GameObject.FindGameObjectWithTag(TagConst.AUDIOMANAGER))
@@ -24,15 +26,30 @@ public class GameManager : Singleton<GameManager>
             Instantiate(_audioManager);
         }
 
+        string nameScene = SceneManager.GetActiveScene().name;
+        
+        if (nameScene is "Start") return;
+
+        if (nameScene is "Map1")
+        {
+            isShowTutorial = true;
+            if(!_tutorialUI) _tutorialUI = GameObject.FindGameObjectWithTag("TutorialUI");
+            if (_tutorialUI)
+            {
+                _tutorialUI.SetActive(isShowTutorial);
+                _tutorialUI.GetComponent<Animator>()?.Play("Play");
+            }
+        }
+
         if (!GameObject.FindGameObjectWithTag(TagConst.AFTERIMAGEPOOL))
         {
-            if (SceneManager.GetActiveScene().name == "Start") return;
             if (!_afteImagePool) _audioManager = Resources.Load<AudioManager>(TagConst.URL_PREFABS + "AfterImagePool");
             Instantiate(_afteImagePool);
         }
 
         if (!_menuDialog)
             _menuDialog = FindObjectOfType<MenuDialog>();
+        
     }
 
     public override void Start()
@@ -45,9 +62,20 @@ public class GameManager : Singleton<GameManager>
     {
         if (isOverGame) return;
         base.Update();
+        if (isShowTutorial)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                if (!_tutorialUI) return;
+                isShowTutorial = false;
+                _tutorialUI.SetActive(isShowTutorial);
+            }
+        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            _menuDialog.ShowDialog();
+            if (!_menuDialog) return;
+            if(!isShowDialog) _menuDialog.ShowDialog();
+            else _menuDialog.HandleClose();
         }
     }
 

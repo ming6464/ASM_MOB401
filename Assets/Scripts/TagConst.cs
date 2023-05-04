@@ -45,13 +45,15 @@ public static class TagConst{
         A_SKILLG = "SkillG";
 
     public const string AUDIO_JUMP1 = "Jump1",
-        AUDIO_JUMP2 = "Jump2",
         AUDIO_KILL = "Kill",
         MUSIC = "Music",
         AUDIO_PICKUP = "PickUp",
         AUDIO_WIN = "Win",
         AUDIO_HIT = "Hit",
-        AUDIO_DEATH = "Death";
+        AUDIO_DEATH = "Death",
+        AUDIO_ATTACK = "Attack",
+        AUDIO_SKILLG = "SkillG",
+        AUDIO_SKILLF = "SkillF";
 
     public const string URL_MATERIALS = "Materials/",URL_PREFABS = "Prefabs/";
 }

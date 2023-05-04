@@ -287,9 +287,9 @@ MonoBehaviour:
   _layerGround:
     serializedVersion: 2
     m_Bits: 2048
-  _highFriction: {fileID: 0}
+  _highFriction: {fileID: 6200000, guid: f36cd1147eb90e349b4b89d58ad894bc, type: 2}
   _foot: {fileID: 2321468491402642247}
-  _bladePlayer: {fileID: 0}
+  _bladePlayer: {fileID: 4420388873818135590, guid: 98309344da4f4aa49b26f6c2cd9549b9, type: 3}
   _skillManager: {fileID: 0}
   m_canAttack: 0
   m_isAttack: 0

@@ -70,6 +70,7 @@ public class MenuDialog : MonoBehaviour
     }
     public void ShowDialog(bool isPause = true, bool isWin = false)
     {
+        if(isPause) GameManager.Ins.isShowDialog = true;
         if (_titleText)
         {
             string text = "Over!";
@@ -99,8 +100,9 @@ public class MenuDialog : MonoBehaviour
         _ctKillEnemy.beeText.text = " X " + Data.GetData(false, TagConst.NameEnemy.BEE);
     }
 
-    private void HandleClose()
+    public void HandleClose()
     {
+        GameManager.Ins.isShowDialog = false;
         Time.timeScale = 1f;
         gameObject.SetActive(false);
     }

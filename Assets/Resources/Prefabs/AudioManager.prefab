@@ -51,16 +51,18 @@ MonoBehaviour:
     name: PickUp
   - auc: {fileID: 8300000, guid: 923dd08c2b7c336459ee05911c6cc754, type: 3}
     name: Jump1
-  - auc: {fileID: 8300000, guid: b185111d621fcbc4aa946a81fc186d86, type: 3}
-    name: Jump2
   - auc: {fileID: 8300000, guid: a7299eb21b6019843a38cea25f2fdf65, type: 3}
     name: Kill
   - auc: {fileID: 8300000, guid: 7aab3f1d2ea686748b923b2b02ea8bcf, type: 3}
-    name: Hit
+    name: Attack
   - auc: {fileID: 8300000, guid: 8f446932832775c4a9b2c69f637f00a4, type: 3}
     name: Win
   - auc: {fileID: 8300000, guid: babf4f4bc8c617049afbcfb135d5f82b, type: 3}
     name: Death
+  - auc: {fileID: 8300000, guid: 65eb8fd8b0bded148afaf314aae25a00, type: 3}
+    name: SkillG
+  - auc: {fileID: 8300000, guid: 7aab3f1d2ea686748b923b2b02ea8bcf, type: 3}
+    name: SkillF
   musicSound:
   - auc: {fileID: 8300000, guid: 819c764d1473ec549ac0222ddbef6ede, type: 3}
     name: Music
