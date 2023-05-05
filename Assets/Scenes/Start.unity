@@ -1050,7 +1050,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pilotText: {fileID: 1867957793}
-  _speed: 0.82
+  _speed: 1
   _posYBegin: -265
   _posYEnd: 993
   _btnClose: {fileID: 2049169489}
@@ -3771,7 +3771,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -32.850006, y: 31.505005}
+  m_AnchoredPosition: {x: -32.850037, y: 31.505005}
   m_SizeDelta: {x: 45.69, y: 43.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2049169489

@@ -339,14 +339,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d4df64f9850dd4e8554b8a4e66801b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _key: {fileID: 899007500287819903, guid: 3c8b9639cdc760d46b066c8385a4273c, type: 3}
-  _isBoss: 0
   _healthBar: {fileID: 974877177279432475}
+  _isBoss: 0
+  _key: {fileID: 899007500287819903, guid: 3c8b9639cdc760d46b066c8385a4273c, type: 3}
   _healthBarOffSet: {x: 0, y: 0.35, z: 0}
   _maxHealth: 100
   _name: Boar
   _point: 15
-  _damage: 25
+  _damage: 20
+  _effectBlood: {fileID: 5624722576989125705, guid: bdb7898fb5a8d5b4cb62aa560819fa61, type: 3}
   _highFriction: {fileID: 6200000, guid: f36cd1147eb90e349b4b89d58ad894bc, type: 2}
   _lengthRayBelow: 1
   _lengthRayAhead: 0.1

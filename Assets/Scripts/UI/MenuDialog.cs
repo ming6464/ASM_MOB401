@@ -49,6 +49,7 @@ public class MenuDialog : MonoBehaviour
     {
         m_SceneName = SceneManager.GetActiveScene().name;
         AddAction();
+        GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
         _titleText.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
         _iconCoin.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
         _ctAudio.musicSlider.onValueChanged.AddListener((value) => ChangeAudio(value, false));

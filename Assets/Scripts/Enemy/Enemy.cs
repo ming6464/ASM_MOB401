@@ -13,6 +13,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private float _maxHealth = 100;
     [SerializeField] private string _name;
     [SerializeField] private int _point,_damage;
+    [SerializeField] private GameObject _effectBlood;
     
     protected Animator m_anim;
     protected Rigidbody2D m_rg;
@@ -26,6 +27,8 @@ public abstract class Enemy : MonoBehaviour
         m_rg = GetComponent<Rigidbody2D>();
         m_player = GameObject.FindWithTag(TagConst.PLAYER).GetComponent<PlayerController>();
         _healthBar.SetData(_maxHealth,_healthBarOffSet);
+        if (_isBoss && !_key) _key = Resources.Load<GameObject>(TagConst.URL_PREFABS + "Key");
+        if (!_effectBlood) _effectBlood = Resources.Load<GameObject>(TagConst.URL_PREFABS + "EffectBlood");
     }
 
     protected virtual void Update()
@@ -58,11 +61,12 @@ public abstract class Enemy : MonoBehaviour
         Data.UpdateData(_name,_point);
         if (_isBoss)
         {
-            if (!_key) _key = Resources.Load<GameObject>(TagConst.URL_PREFABS + "Key");
+            _key = Resources.Load<GameObject>(TagConst.URL_PREFABS + "Key");
             GameObject newKey = Instantiate(_key, transform.position, quaternion.identity);
-            newKey.GetComponent<Rigidbody2D>().velocity = new Vector2(2 * FindDirPlayer(), 2);
+            newKey.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 2);
         }
         AudioManager.Ins.PlayAudio(TagConst.AUDIO_KILL,true);
+        Instantiate(_effectBlood, transform.position, quaternion.identity);
         Destroy(this.gameObject);
     }
     private void OnTriggerEnter2D(Collider2D col)

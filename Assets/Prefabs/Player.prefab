@@ -87,7 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad64ec2d2b03abb418271bc28b56c96a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 15
+  _damage: 25
   _damegaSkill: 35
 --- !u!1 &89223484760061481
 GameObject:
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad64ec2d2b03abb418271bc28b56c96a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 15
+  _damage: 25
   _damegaSkill: 35
 --- !u!1 &2321468491402642247
 GameObject:
@@ -291,6 +291,7 @@ MonoBehaviour:
   _foot: {fileID: 2321468491402642247}
   _bladePlayer: {fileID: 4420388873818135590, guid: 98309344da4f4aa49b26f6c2cd9549b9, type: 3}
   _skillManager: {fileID: 0}
+  _effectBloodPlayer: {fileID: 4658858847993889993, guid: 7073a158b8ddff044bf19fd3d9f2704a, type: 3}
   m_canAttack: 0
   m_isAttack: 0
   m_isJumpStart: 0
@@ -338,7 +339,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 531146793
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -2096078746, guid: 2bfa0983c350289418aeeb2ce142d39f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -506,5 +507,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad64ec2d2b03abb418271bc28b56c96a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 15
+  _damage: 25
   _damegaSkill: 35

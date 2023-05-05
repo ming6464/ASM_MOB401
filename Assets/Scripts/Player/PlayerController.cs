@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private SkillManager _skillManager;
 
+    [SerializeField] private GameObject _effectBloodPlayer;
+
     public bool m_canAttack,m_isAttack,m_isJumpStart,m_isJump,m_isLand,isUsingSkill,isActiveSkillG,isActiveSkillF;
 
     private float m_directX, m_directY, m_passDirectX, m_attackAnimationDuration, m_jumpAnimationDuration;
@@ -62,6 +64,10 @@ public class PlayerController : MonoBehaviour
         
         //Blade
         if (!_bladePlayer) _bladePlayer = Resources.Load<BladePlayer>(TagConst.URL_PREFABS + "BladePlayer");
+        
+        //Effect blood
+        if (!_effectBloodPlayer)
+            _effectBloodPlayer = Resources.Load<GameObject>(TagConst.URL_PREFABS + "EffectBloodPlayer");
     }
     
     void Update()
@@ -424,6 +430,7 @@ public class PlayerController : MonoBehaviour
 
     private void End()
     {
+        Instantiate(_effectBloodPlayer, transform.position, Quaternion.identity);
         PlayAudio(TagConst.AUDIO_DEATH);
         m_isDeath = true;
         m_anim.SetBool(TagConst.ParamHit,false);
