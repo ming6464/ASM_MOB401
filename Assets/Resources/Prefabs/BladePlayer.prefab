@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2528603193518018472}
   - component: {fileID: 1359347567706497761}
   - component: {fileID: 4420388873818135590}
+  - component: {fileID: 1665865942869204440}
   - component: {fileID: 2315527989579673057}
   m_Layer: 0
   m_Name: BladePlayer
@@ -71,6 +72,19 @@ MonoBehaviour:
   _speed: 10
   _timeAcitve: 2
   _damage: 50
+--- !u!114 &1665865942869204440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544272741460288539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2c97511d0f419e8ec7239227eb39bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damage: 35
 --- !u!96 &2315527989579673057
 TrailRenderer:
   serializedVersion: 2

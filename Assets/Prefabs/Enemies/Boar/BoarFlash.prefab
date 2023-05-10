@@ -228,6 +228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sliderHealth: {fileID: 861438334370501663}
+  _timeShow: 1
 --- !u!1 &6649537026038608396
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,6 +527,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8614812386080094173}
   - component: {fileID: 8614812386080094162}
+  - component: {fileID: 682472625958898183}
+  - component: {fileID: 8339112794892102803}
   - component: {fileID: 8614812386080094174}
   - component: {fileID: 8614812386080094175}
   - component: {fileID: 8614812386080094160}
@@ -567,14 +570,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d4df64f9850dd4e8554b8a4e66801b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthBar: {fileID: 5293828387730259228}
-  _isBoss: 0
+  isBoss: 0
+  isHit: 0
+  isDeath: 0
   _key: {fileID: 899007500287819903, guid: 3c8b9639cdc760d46b066c8385a4273c, type: 3}
-  _healthBarOffSet: {x: 0, y: 0.35, z: 0}
-  _maxHealth: 100
   _name: Boar
   _point: 25
-  _damage: 20
   _effectBlood: {fileID: 5624722576989125705, guid: bdb7898fb5a8d5b4cb62aa560819fa61, type: 3}
   _highFriction: {fileID: 6200000, guid: f36cd1147eb90e349b4b89d58ad894bc, type: 2}
   _lengthRayBelow: 1
@@ -588,6 +589,36 @@ MonoBehaviour:
   _layWall:
     serializedVersion: 2
     m_Bits: 8192
+--- !u!114 &682472625958898183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8614812386080094163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c811879c0b0b4054a8c82489b0289081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHp: 100
+  _hp: 0
+  _healthBar: {fileID: 5293828387730259228}
+  _healthBarOffSet: {x: 0, y: 0.5, z: 0}
+  _enemyCtrl: {fileID: 8614812386080094162}
+--- !u!114 &8339112794892102803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8614812386080094163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 491003d8f9cb410da6879c928c4a98e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damage: 20
 --- !u!212 &8614812386080094174
 SpriteRenderer:
   m_ObjectHideFlags: 0

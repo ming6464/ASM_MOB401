@@ -4,20 +4,15 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
-    
-    [SerializeField]
-    protected HealthBar _healthBar;
-    [SerializeField] protected bool _isBoss;
+    [SerializeField] public bool isBoss,isHit,isDeath;
     [SerializeField] private GameObject _key;
-    [SerializeField] private Vector3 _healthBarOffSet;
-    [SerializeField] private float _maxHealth = 100;
     [SerializeField] private string _name;
-    [SerializeField] private int _point,_damage;
+    [SerializeField] private int _point;
     [SerializeField] private GameObject _effectBlood;
     
     protected Animator m_anim;
     protected Rigidbody2D m_rg;
-    protected bool isDeath, m_isHit, m_isSeePlayer;
+    protected bool m_isSeePlayer;
     private PlayerController m_player;
     protected string m_animPass, m_animCur;
 
@@ -26,8 +21,7 @@ public abstract class Enemy : MonoBehaviour
         m_anim = GetComponent<Animator>();
         m_rg = GetComponent<Rigidbody2D>();
         m_player = GameObject.FindWithTag(TagConst.PLAYER).GetComponent<PlayerController>();
-        _healthBar.SetData(_maxHealth,_healthBarOffSet);
-        if (_isBoss && !_key) _key = Resources.Load<GameObject>(TagConst.URL_PREFABS + "Key");
+        if (isBoss && !_key) _key = Resources.Load<GameObject>(TagConst.URL_PREFABS + "Key");
         if (!_effectBlood) _effectBlood = Resources.Load<GameObject>(TagConst.URL_PREFABS + "EffectBlood");
     }
 
@@ -56,12 +50,18 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
+    public void OnDead()
+    {
+        m_anim.SetTrigger(TagConst.ParamDeath);
+        m_rg.velocity = new Vector2(0f, 0f);
+    }
+
     private void Death()
     {
         Data.UpdateData(_name,_point);
-        if (_isBoss)
+        if (isBoss)
         {
-            _key = Resources.Load<GameObject>(TagConst.URL_PREFABS + "Key");
+            if(!_key) _key = Resources.Load<GameObject>(TagConst.URL_PREFABS + "Key");
             GameObject newKey = Instantiate(_key, transform.position, quaternion.identity);
             newKey.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 2);
         }
@@ -72,10 +72,6 @@ public abstract class Enemy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D col)
     {
         GameObject gObj = col.gameObject;
-        if (gObj.CompareTag(TagConst.PLAYER) && m_player)
-        {
-            m_player.OnHit(_damage);
-        }
         if (gObj.CompareTag(TagConst.DEATHZONE)) Death();
     }
 
@@ -83,6 +79,6 @@ public abstract class Enemy : MonoBehaviour
     {
         m_isSeePlayer = isSee;
     }
-    public abstract void OnHit(float damage);
+    public abstract void OnHit();
 
 }

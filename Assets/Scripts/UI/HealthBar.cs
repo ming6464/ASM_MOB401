@@ -5,15 +5,10 @@ using UnityEngine.UI;
 public class HealthBar :MonoBehaviour
 {
     [SerializeField] private Slider _sliderHealth;
+    [SerializeField] private float _timeShow;
     private Vector3 m_offSet;
-    private float m_curHealth,m_timeShow,m_startTimeShow,m_maxHealth;
+    private float m_curHealth,m_startTimeShow,m_maxHealth;
     private bool m_isShow,m_isPlayer,m_isSetData;
-
-
-    private void Start()
-    {
-        m_timeShow = 1.5f;
-    }
 
     private void Update()
     {
@@ -33,57 +28,41 @@ public class HealthBar :MonoBehaviour
 
     public void SetData(float maxHealth,Vector3 offSet,bool isPlayer = false)
     {
-        
         if (m_isSetData) return;
         m_offSet = offSet;
-        MaxHealth = maxHealth;
-        CurHeath = maxHealth;
+        _sliderHealth.maxValue = maxHealth;
+        _sliderHealth.value = maxHealth;
         m_isPlayer = isPlayer;
-        _sliderHealth.fillRect.GetComponentInChildren<Image>().color =
-            Color.Lerp(GameManager.Ins.colorLowHealth, GameManager.Ins.colorHighHealth, _sliderHealth.normalizedValue);
         m_isSetData = true;
         if(!isPlayer) HideSliderHealth();
+        UpdateColorHealthBar();
     }
     
-    public void ChangeHealth(float val)
+    public void ChangeHealth(int val)
     {
-        CurHeath += val;
+        val = Mathf.Abs(val);
+        _sliderHealth.value = val;
+        UpdateColorHealthBar();
+        ShowSliderHealth();
+    }
+
+    private void UpdateColorHealthBar()
+    {
         _sliderHealth.fillRect.GetComponentInChildren<Image>().color =
             Color.Lerp(GameManager.Ins.colorLowHealth, GameManager.Ins.colorHighHealth, _sliderHealth.normalizedValue);
-        HideSliderHealth(false);
     }
 
-    public bool CheckOutOfHealth()
-    {
-        return CurHeath <= 0;
-    }
-
-    public float MaxHealth
-    {
-        get => this.m_maxHealth;
-        set
-        {
-            m_maxHealth = value;
-            _sliderHealth.maxValue = value;
-        }
-    }
-
-    public float CurHeath
-    {
-        get => this.m_curHealth;
-        set
-        {
-            value = Mathf.Clamp(value, 0, MaxHealth);
-            m_curHealth = value;
-            _sliderHealth.value = value;
-        }
-    }
-
-    public void HideSliderHealth(bool isHide = true)
+    public void ShowSliderHealth()
     {
         if (m_isPlayer) return;
-        m_isShow = !isHide;
-        if (m_isShow) m_startTimeShow = m_timeShow;
+        m_startTimeShow = _timeShow;
+        m_isShow = true;
+        _sliderHealth.gameObject.SetActive(m_isShow);
+    }
+
+    public void HideSliderHealth()
+    {
+        m_isShow = false;
         _sliderHealth.gameObject.SetActive(m_isShow);
     }
 

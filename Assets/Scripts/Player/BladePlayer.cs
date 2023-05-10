@@ -24,10 +24,4 @@ public class BladePlayer : MonoBehaviour
         m_isRun = true;
         m_countdonwnActived = _timeAcitve;
     }
-    
-    private void OnTriggerEnter2D(Collider2D col)
-    {
-        GameObject gObj = col.gameObject;
-        if (gObj.CompareTag(TagConst.ENEMY)) gObj.GetComponent<Enemy>().OnHit(_damage);
-    }
 }

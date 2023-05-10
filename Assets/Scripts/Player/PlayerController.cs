@@ -6,11 +6,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
     [SerializeField]
-    private HealthBar _healthBar;
-    [SerializeField]
-    private float _moveSpeed = 4,_maxHealth = 150,_lengthRayAhead = 0.2f;
+    private float _moveSpeed = 4,_lengthRayAhead = 0.2f;
 
     [SerializeField] private LayerMask _layerWall,_layerGround;
     
@@ -24,12 +21,14 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private GameObject _effectBloodPlayer;
 
-    public bool m_canAttack,m_isAttack,m_isJumpStart,m_isJump,m_isLand,isUsingSkill,isActiveSkillG,isActiveSkillF;
+    public bool isUsingSkill,isActiveSkillG,isActiveSkillF,isHit;
+
+    private bool m_canAttack, m_isJumpStart, m_isJump, m_isLand,m_isAttack;
 
     private float m_directX, m_directY, m_passDirectX, m_attackAnimationDuration, m_jumpAnimationDuration;
+    private bool m_isDeath, m_isHasKey, m_isMove;
     private Rigidbody2D m_rg;
     private Vector2 m_velJump;
-    private bool m_isHit, m_isDeath, m_isHasKey, m_isMove;
     private Animator m_anim;
     private string m_passAnim, m_curAnim,m_nextAttack;
     private BoxCollider2D m_boxColl,m_boxCollFoot;
@@ -46,8 +45,7 @@ public class PlayerController : MonoBehaviour
         Physics2D.IgnoreLayerCollision(3,6,false);
         
         //HealthBar{
-        if (!_healthBar) _healthBar = FindObjectOfType<HealthBar>();
-        _healthBar.SetData(_maxHealth,Vector3.zero,true);
+        
         //HealthBar}
         
         //High Friction{
@@ -393,7 +391,7 @@ public class PlayerController : MonoBehaviour
             PlayAudio(TagConst.AUDIO_WIN);
             GameManager.Ins.StateGame(true);
         }
-        else if (gObj.CompareTag(TagConst.DEATHZONE)) End();
+        else if (gObj.CompareTag(TagConst.DEATHZONE)) OnDead();
         if (gObj.CompareTag(TagConst.KEY))
         {
             UIManager.Ins.ShowKey();
@@ -403,32 +401,22 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    public void OnHit(int damage)
+    public void OnHit()
     {
-        if (m_isHit) return;
-        m_isHit = true;
-        m_anim.SetBool(TagConst.ParamHit,m_isHit);
-        Physics2D.IgnoreLayerCollision(3,6);
+        m_anim.SetBool(TagConst.ParamHit,true);
+        //Physics2D.IgnoreLayerCollision(3,6);
         StartCoroutine(CountDownResetHit());
-        ChangeHealth(damage * -1);
     }
 
     private IEnumerator CountDownResetHit()
     {
         yield return new WaitForSeconds(2);
-        m_isHit = false;
-        m_anim.SetBool(TagConst.ParamHit,m_isHit);
-        Physics2D.IgnoreLayerCollision(3,6,false);
-    }
-    
-    public void ChangeHealth(float val)
-    {
-        _healthBar.ChangeHealth(val);
-        m_isDeath = _healthBar.CheckOutOfHealth();
-        if (m_isDeath) End();
+        isHit = false;
+        m_anim.SetBool(TagConst.ParamHit,false);
+        //Physics2D.IgnoreLayerCollision(3,6,false);
     }
 
-    private void End()
+    public void OnDead()
     {
         Instantiate(_effectBloodPlayer, transform.position, Quaternion.identity);
         PlayAudio(TagConst.AUDIO_DEATH);

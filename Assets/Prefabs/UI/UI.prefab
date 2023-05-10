@@ -4266,6 +4266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sliderHealth: {fileID: 2221842458483238023}
+  _timeShow: 0
 --- !u!1 &2221842458628687523
 GameObject:
   m_ObjectHideFlags: 0
@@ -5700,7 +5701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillType: 0
-  skillCooldown: 30
+  skillCooldown: 15
 --- !u!1 &2534881098622030866
 GameObject:
   m_ObjectHideFlags: 0
@@ -6370,7 +6371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillType: 1
-  skillCooldown: 40
+  skillCooldown: 30
 --- !u!1 &7426987338549515856
 GameObject:
   m_ObjectHideFlags: 0

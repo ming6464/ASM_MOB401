@@ -39,13 +39,13 @@ public class Boar : Enemy
 
     protected override void Update()
     {
-        if (m_isHit || isDeath) return;
+        if (this.isHit || isDeath) return;
 
         float speed = 0;
         
         if (UpdateDirAndCheckMove())
         {
-            if (this.m_isSeePlayer && !_isBoss)
+            if (this.m_isSeePlayer && !isBoss)
             {
                 m_animCur = TagConst.A_Run;
                 speed = _speedRunning;
@@ -86,7 +86,7 @@ public class Boar : Enemy
                 if (hits.Length > 0)
                 {
                     if (!hits[0].collider.CompareTag(TagConst.DEATHZONE)) return true;
-                }else if (this.m_isSeePlayer && !_isBoss) return true;
+                }else if (this.m_isSeePlayer && !isBoss) return true;
             }
             ChangeDir();
             return false;
@@ -105,23 +105,12 @@ public class Boar : Enemy
         StartCoroutine(Idled());
     }
     
-    public override void OnHit(float damage)
+    public override void OnHit()
     {
-        if (_healthBar)
-        {
-            _healthBar.ChangeHealth(damage * -1);
-            if (_healthBar.CheckOutOfHealth())
-            {
-                isDeath = true;
-                m_anim.SetTrigger(TagConst.ParamDeath);
-                m_rg.velocity = new Vector2(0f, 0f);
-            }
-        }
-
-        if (_isBoss) return;
+        if (isBoss) return;
         m_rg.velocity = GetVelocityHit();
         m_rg.sharedMaterial = null;
-        m_isHit = true;
+        isHit = true;
         m_animCur = "Hit";
         this.PlayAnim(m_animCur);
     }
@@ -129,7 +118,7 @@ public class Boar : Enemy
     {
         m_rg.sharedMaterial = _highFriction;
         m_isIdling = false;
-        m_isHit = false;
+        this.isHit = false;
         m_direction = FindDirPlayer();
         UpdateDir();
     }
